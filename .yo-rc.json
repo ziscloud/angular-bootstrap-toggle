@@ -1,0 +1,30 @@
+{
+  "generator-angularjs-library": {
+    "props": {
+      "author": {
+        "name": "Tony Wang",
+        "email": "ziscloud@gmail.com"
+      },
+      "libraryName": {
+        "original": "angular-bootstrap-toggle",
+        "camelized": "angularBootstrapToggle",
+        "dasherized": "angular-bootstrap-toggle",
+        "slugified": "angular-bootstrap-toggle",
+        "parts": [
+          "angular",
+          "bootstrap",
+          "toggle"
+        ]
+      },
+      "includeModuleDirectives": true,
+      "includeModuleFilters": false,
+      "includeModuleServices": false,
+      "includeAngularModuleResource": false,
+      "includeAngularModuleCookies": false,
+      "includeAngularModuleSanitize": false,
+      "librarySrcDirectory": "src/angular-bootstrap-toggle",
+      "libraryUnitTestDirectory": "test/unit/angular-bootstrap-toggle",
+      "libraryUnitE2eDirectory": "test/e2e/angular-bootstrap-toggle"
+    }
+  }
+}

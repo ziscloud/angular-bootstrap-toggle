@@ -1,0 +1,24 @@
+{
+  "name": "angular-bootstrap-toggle",
+  "version": "0.1.0",
+  "authors": [
+    {
+      "name": "Tony Wang",
+      "email": "ziscloud@gmail.com"
+    }
+  ],
+  "main": ["dist/angular-bootstrap-toggle.js"],
+  "ignore": [
+    "src",
+    "test",
+    "gulpfile.js",
+    "karma-*.conf.js",
+    "**/.*"
+  ],
+  "dependencies": {},
+  "devDependencies": {
+    "angular-mocks": ">=1.2.0",
+    "angular-scenario": ">=1.2.0",
+    "angular": ">=1.2.0"
+  }
+}
