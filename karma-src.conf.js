@@ -10,16 +10,13 @@ module.exports = function(config) {
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['mocha', 'chai-jquery', 'jquery-1.8.3', 'sinon-chai'],
+    frameworks: ['jasmine'],
 
     plugins: [
-      'karma-mocha',
-      'karma-chai',
-      'karma-sinon-chai',
+      'karma-jasmine',
       'karma-chrome-launcher',
-      'karma-phantomjs-launcher',
+      'karma-phantomjs2-launcher',
       'karma-jquery',
-      'karma-chai-jquery',
       'karma-spec-reporter'
     ],
 
@@ -68,7 +65,7 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['PhantomJS'],
+    browsers: ['PhantomJS2'],
 
 
     // Continuous Integration mode
