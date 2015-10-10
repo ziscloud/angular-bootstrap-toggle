@@ -7,7 +7,10 @@
       "email": "ziscloud@gmail.com"
     }
   ],
-  "main": ["dist/angular-bootstrap-toggle.js"],
+  "main": [
+    "dist/angular-bootstrap-toggle.min.js",
+    "dist/angular-bootstrap-toggle.min.css"
+  ],
   "ignore": [
     "src",
     "test",
@@ -15,7 +18,9 @@
     "karma-*.conf.js",
     "**/.*"
   ],
-  "dependencies": {},
+  "dependencies": {
+    "angular": ">=1.2.0"
+  },
   "devDependencies": {
     "angular-mocks": ">=1.2.0",
     "angular-scenario": ">=1.2.0",

@@ -7,7 +7,8 @@ var path = require('path');
 var plumber = require('gulp-plumber');
 var runSequence = require('run-sequence');
 var jshint = require('gulp-jshint');
-
+var less = require('gulp-less');
+var minifyCSS = require('gulp-minify-css');
 /**
  * File patterns
  **/
@@ -27,13 +28,26 @@ var sourceFiles = [
   path.join(sourceDirectory, '/**/*.js')
 ];
 
+gulp.task('less', function () {
+  return gulp.src('./src/**/*.less')
+    .pipe(less({
+      paths: [path.join(__dirname, 'less', 'includes')]
+    }))
+    .pipe(gulp.dest('./dist/'))
+    .pipe(minifyCSS({compatibility: 'ie8'}))
+    .pipe(rename(function (path) {
+      path.basename += ".min";
+    }))
+    .pipe(gulp.dest('./dist'));
+});
+
 var lintFiles = [
   'gulpfile.js',
   // Karma configuration
   'karma-*.conf.js'
 ].concat(sourceFiles);
 
-gulp.task('build', function() {
+gulp.task('uglify', function () {
   gulp.src(sourceFiles)
     .pipe(plumber())
     .pipe(concat('angular-bootstrap-toggle.js'))
@@ -42,6 +56,11 @@ gulp.task('build', function() {
     .pipe(rename('angular-bootstrap-toggle.min.js'))
     .pipe(gulp.dest('./dist'));
 });
+
+gulp.task('build', function (done) {
+  runSequence('uglify', 'less', done);
+});
+
 
 /**
  * Process
