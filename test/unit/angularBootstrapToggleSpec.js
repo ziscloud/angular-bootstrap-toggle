@@ -11,6 +11,7 @@ describe('', function () {
     inject(function ($compile, $rootScope) {
       compile = $compile;
       scope = $rootScope.$new();
+      scope.toggleStatus = jasmine.createSpy('toggleStatus');
     });
 
     directiveElem = getCompiledElement();
@@ -39,6 +40,15 @@ describe('', function () {
     expect(labelElement).toBeDefined();
     expect(angular.element(labelElement[0]).text()).toEqual('Enabled');
     expect(angular.element(labelElement[1]).text()).toEqual('Disabled');
+  });
+
+  it('ngChange should be called', function () {
+    directiveElem = getCompiledElement('<toggle ng-model="model" ng-change="toggleStatus(m)" on="Enabled" off="Disabled"></toggle>')
+    var wrapper = directiveElem.find('div')[0];
+    angular.element(wrapper).triggerHandler('click');
+    scope.$digest();
+
+    expect(scope.toggleStatus).toHaveBeenCalled();
   });
 
   it('should in the off status', function () {
