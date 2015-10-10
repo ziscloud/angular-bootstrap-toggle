@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  angular.module('ui.toggle')
+  angular.module('ui.toggle',[])
 
     .value('$toggleSuppressError', false)
 
@@ -131,7 +131,7 @@
         scope: {
           bindModel: '=ngModel'
         },
-        require: ['toggle', '^ngModel'],
+        require: ['toggle', 'ngModel'],
         controller: 'ToggleController',
         controllerAs: 'toggle',
         link: function (scope, element, attrs, ctrls) {
