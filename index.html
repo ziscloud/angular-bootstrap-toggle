@@ -1,18 +1,15 @@
 <!DOCTYPE html>
 <html ng-app="ui.toggle.demo" id="top">
 <head>
-    <script> if (window.location.href.indexOf('minhur.github.io') > 0) window.location.replace('http://www.bootstraptoggle.com') </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="msvalidate.01" content="3638AEFC99423BA5CB586805286C39AA"/>
     <meta name="description"
-          content="Bootstrap Toggle is a highly flexible Bootstrap plugin that converts checkboxes into toggles."/>
-    <meta name="keywords" content="bootstrap, toggle, switch, bootstrap-toggle, bootstrap-switch"/>
-    <meta name="author" content="metatags generator">
+          content="Angular Bootstrap Toggle is a highly flexible Bootstrap plugin that converts checkboxes into toggles."/>
+    <meta name="keywords" content="angular, bootstrap, toggle, switch, bootstrap-toggle, bootstrap-switch"/>
+    <meta name="author" content="Tony Wang">
     <meta name="robots" content="index, follow">
     <meta name="revisit-after" content="1 month">
-    <title>Bootstrap Toggle</title>
-    <link rel="canonical" href="http://www.bootstraptoggle.com">
+    <title>Angular Bootstrap Toggle</title>
     <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.3/styles/github.min.css" rel="stylesheet">
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
@@ -56,7 +53,8 @@
         <div class="container">
             <h1>Angular Bootstrap Toggle</h1>
 
-            <p>Angular version of Bootstrap Toggle - http://www.bootstraptoggle.com/</p>
+            <p><a href="http://angularjs.org/" target="_blank">AngularJS</a> version of <a
+                    href="http://www.bootstraptoggle.com/">Bootstrap Toggle</a></p>
 
             <div class="mast-links">
                 <iframe src="https://mdo.github.io/github-buttons/github-btn.html?user=ziscloud&repo=angular-bootstrap-toggle&type=watch&count=true&size=large"
@@ -90,16 +88,21 @@
             </ul>
             <h3>Installation</h3>
 
-            <p>You can <a href="https://github.com/ziscloud/angular-bootstrap-toggle/archive/master.zip">download</a> the latest
+            <p>You can <a href="https://github.com/ziscloud/angular-bootstrap-toggle/archive/master.zip">download</a>
+                the latest
                 version of Angular Bootstrap Toggle or use CDN to load the library.</p>
 
-            <code class="highlight">&lt;link href="https://gitcdn.github.io/angular-bootstrap-toggle/{version}/dist/angular-bootstrap-toggle.min.css" rel="stylesheet"&gt;
-&lt;script src="https://gitcdn.github.io/bootstrap-toggle/{version}/dist/angular-bootstrap-toggle.min.js"&gt;&lt;/script&gt;</code>
+            <code class="highlight">&lt;link
+                href="https://gitcdn.github.io/angular-bootstrap-toggle/{version}/dist/angular-bootstrap-toggle.min.css"
+                rel="stylesheet"&gt;
+                &lt;script
+                src="https://gitcdn.github.io/bootstrap-toggle/{version}/dist/angular-bootstrap-toggle.min.js"&gt;&lt;/script&gt;</code>
 
             <h3>Bower Installation</h3>
             <pre><code>$ bower install angular-bootstrap-toggle --save</code></pre>
             <p>As soon as you've got all the files downloaded and included in your page you just need to declare
-                a dependency on the <code>ui.toggle</code> <a href="http://docs.angularjs.org/guide/module">module</a>:<br>
+                a dependency on the <code>ui.toggle</code> <a
+                        href="http://docs.angularjs.org/guide/module">module</a>:<br>
             <pre><code>angular.module('myModule', ['ui.toggle']);</code></pre>
             </p>
         </section>
@@ -269,7 +272,7 @@
 
         <div class="example">
             <toggle ng-model="toggleValue" ng-change="changed()" on="Ready" off="Not Ready"
-                   onstyle="btn-success" offstyle="btn-danger"></toggle>
+                    onstyle="btn-success" offstyle="btn-danger"></toggle>
         </div>
 
         <h3>Icons/Html Text</h3>
@@ -278,7 +281,7 @@
 
         <div class="example">
             <toggle ng-model="toggleValue" ng-change="changed()" on="<i class='fa fa-play'></i> Play"
-                   off="<i class='fa fa-pause'></i> Pause"></toggle>
+                    off="<i class='fa fa-pause'></i> Pause"></toggle>
         </div>
 
         <h3>Multiple Lines of Text</h3>
@@ -351,19 +354,14 @@
 <script src="js/angular-bootstrap-toggle.min.js"></script>
 <script src="js/app.js"></script>
 <script>
-    (function (i, s, o, g, r, a, m) {
-        i['GoogleAnalyticsObject'] = r;
-        i[r] = i[r] || function () {
-                    (i[r].q = i[r].q || []).push(arguments)
-                }, i[r].l = 1 * new Date();
-        a = s.createElement(o),
-                m = s.getElementsByTagName(o)[0];
-        a.async = 1;
-        a.src = g;
-        m.parentNode.insertBefore(a, m)
-    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
-    ga('create', 'UA-55669452-1', 'auto');
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-68673271-1', 'auto');
     ga('send', 'pageview');
+
 </script>
 </body>
 </html>
