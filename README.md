@@ -1,4 +1,4 @@
-### Angular Bootstrap Toggle - [AngularJS](http://angularjs.org/) Toggle directive specific to [Bootstrap](http://getbootstrap.com)
+### Angular Bootstrap Toggle - [AngularJS](http://angularjs.org/) version of [Bootstrap Toggle](http://www.bootstraptoggle.com/)
 
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/ziscloud/angular-bootstrap-toggle?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Build Status](https://secure.travis-ci.org/ziscloud/angular-bootstrap-toggle.svg)](http://travis-ci.org/ziscloud/angular-bootstrap-toggle)
@@ -29,13 +29,6 @@ It is strongly recommended you use Angular 1.3+ or higher due to 'Bind Once'.
 ```sh
 $ bower install angular-bootstrap-toggle --save
 ```
-
-#### Manual download
-
-After downloading dependencies (or better yet, referencing them from your favorite CDN) you need to download build version of this project. 
-All the files and their purposes are described here:
-https://github.com/ziscloud/angular-bootstrap-toggle/tree/gh-pages#build-files
-Don't worry, if you are not sure which file to take, opt for `angular-bootstrap-toggle.min.js` and `angular-bootstrap-toggle.min.css`.
 
 ### Adding dependency to your project
 
