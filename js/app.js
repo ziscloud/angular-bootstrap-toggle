@@ -11,9 +11,10 @@ angular.module('ui.toggle.demo', ['ui.toggle', 'ngTouch', 'ngAnimate', 'ngSaniti
     }
 }])
     .controller('MainCtrl', function MainCtrl($scope) {
+        $scope.clickTimes = 0;
         $scope.toggleValue = true;
-        $scope.onChange = function() {
-
+        $scope.changed = function(evt) {
+            $scope.clickTimes+=1;
         };
     });
 
