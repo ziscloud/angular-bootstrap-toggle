@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  angular.module('ui.toggle',[])
+  angular.module('ui.toggle', [])
 
     .value('$toggleSuppressError', false)
 
@@ -41,19 +41,7 @@
        * Default: ''
        * Description: Appends the value to the class attribute of the toggle. This can be used to apply custom styles. Refer to Custom Styles for reference.
        */
-      style: '',
-      /**
-       * Type: integer
-       * Default: null
-       * Description: Sets the width of the toggle. if set to null, width will be calculated.
-       */
-      width: null,
-      /**
-       * Type: integer
-       * Default: null
-       * Description: Sets the height of the toggle. if set to null, height will be calculated.
-       */
-      height: null
+      style: ''
     })
 
     .controller('ToggleController',
@@ -63,8 +51,10 @@
           ngModelCtrl = {$setViewValue: angular.noop};
 
         // Configuration attributes
-        angular.forEach(['on', 'off', 'size', 'onstyle', 'offstyle', 'style', 'width', 'height'], function (key, index) {
+        angular.forEach(['on', 'off', 'size', 'onstyle', 'offstyle', 'style'], function (key, index) {
+          //$log.info(key + ':' + $attrs[key]);
           self[key] = angular.isDefined($attrs[key]) ? (index < 6 ? $interpolate($attrs[key])($scope.$parent) : $scope.$parent.$eval($attrs[key])) : toggleConfig[key];
+          //$log.info(key + ':' + self[key]);
         });
 
         this.init = function (ngModelCtrl_) {
@@ -81,16 +71,24 @@
           var labels = self.element.find('label');
           angular.element(labels[0]).html(self.on);
           angular.element(labels[1]).html(self.off);
-
           var spans = self.element.find('span');
+          var wrapperComputedWidth = self.width || Math.max(labels[0].offsetWidth, labels[1].offsetWidth) + (spans[0].offsetWidth / 2);
+          var wrapperComputedHeight = self.height || Math.max(labels[0].offsetHeight, labels[1].offsetHeight);
 
-          var width = self.width || Math.max(labels[0].offsetWidth, labels[1].offsetWidth) + (spans[0].offsetWidth / 2);
-          var height = self.height || Math.max(labels[0].offsetHeight, labels[1].offsetHeight);
+          var divs = self.element.find('div');
+          var wrapperWidth = divs[0].offsetWidth;
+          var wrapperHeight = divs[1].offsetHeight;
 
-          $scope.wrapperStyle = {width: width, height: height};
+          $scope.wrapperStyle = {};
+          if (wrapperWidth < wrapperComputedWidth) {
+            $scope.wrapperStyle.width = wrapperComputedWidth + 'px';
+          }
 
-          $scope.onClass = [self.size, 'toggle-on'];
-          $scope.offClass = [self.size, 'toggle-off'];
+          if (wrapperHeight < wrapperComputedHeight && self.size != 'btn-xs' && self.size != 'btn-sm') {
+            $scope.wrapperStyle.height = wrapperComputedHeight + 'px';
+          }
+          $scope.onClass = [self.onstyle, self.size, 'toggle-on'];
+          $scope.offClass = [self.offstyle, self.size, 'toggle-off'];
           $scope.handleClass = [self.size, 'toggle-handle'];
         };
 
@@ -127,7 +125,7 @@
       return {
         restrict: 'E',
         transclude: true,
-        template: '<div class="toggle btn" ng-class="wrapperClass" ng-style="::wrapperStyle" ng-click="onSwitch()"><div class="toggle-group"><label class="btn btn-primary" ng-class="::onClass"></label><label class="btn btn-default active" ng-class="::offClass"></label><span class="btn btn-default" ng-class="::handleClass"></span></div></div>',
+        template: '<div class="toggle btn" ng-class="wrapperClass" ng-style="::wrapperStyle" ng-click="onSwitch()"><div class="toggle-group"><label class="btn" ng-class="::onClass"></label><label class="btn active" ng-class="::offClass"></label><span class="btn btn-default" ng-class="::handleClass"></span></div></div>',
         scope: {
           bindModel: '=ngModel'
         },
