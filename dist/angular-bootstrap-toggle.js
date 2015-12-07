@@ -161,10 +161,15 @@
           require: ['toggle', 'ngModel'],
           controller: 'ToggleController',
           controllerAs: 'toggle',
-          link: function (scope, element, attrs, ctrls) {
-            var toggleCtrl = ctrls[0], ngModelCtrl = ctrls[1];
-            toggleCtrl.element = element;
-            toggleCtrl.init(ngModelCtrl);
+          compile: function (element, attrs, transclude) {
+            return {
+              pre: function (scope, element, attrs, ctrls) {
+                var toggleCtrl = ctrls[0], ngModelCtrl = ctrls[1];
+                toggleCtrl.element = element;
+                toggleCtrl.init(ngModelCtrl);
+              },
+              post: function () {}
+            }
           }
         };
       }

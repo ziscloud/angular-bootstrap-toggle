@@ -56,9 +56,11 @@
 
           // Configuration attributes
           angular.forEach(['on', 'off', 'size', 'onstyle', 'offstyle', 'style'], function (key, index) {
+            //$log.info(key + ':' + $attrs[key]);
             self[key] = angular.isDefined($attrs[key]) ?
               (index < 6 ? $interpolate($attrs[key])($scope.$parent) : $scope.$parent.$eval($attrs[key])) :
               toggleConfig[key];
+            //$log.info(key + ':' + self[key]);
           });
 
           this.init = function (ngModelCtrl_) {
