@@ -36,7 +36,7 @@ gulp.task('less', function () {
     .pipe(gulp.dest('./dist/'))
     .pipe(minifyCSS({compatibility: 'ie8'}))
     .pipe(rename(function (path) {
-      path.basename += ".min";
+      path.basename += '.min';
     }))
     .pipe(gulp.dest('./dist'));
 });
