@@ -56,11 +56,9 @@
 
           // Configuration attributes
           angular.forEach(['on', 'off', 'size', 'onstyle', 'offstyle', 'style'], function (key, index) {
-            //$log.info(key + ':' + $attrs[key]);
             self[key] = angular.isDefined($attrs[key]) ?
               (index < 6 ? $interpolate($attrs[key])($scope.$parent) : $scope.$parent.$eval($attrs[key])) :
               toggleConfig[key];
-            //$log.info(key + ':' + self[key]);
           });
 
           this.init = function (ngModelCtrl_) {
@@ -110,14 +108,11 @@
 
           this.toggle = function () {
             if (angular.isDefined(ngModelCtrl.$viewValue)) {
-              this.isOn = ngModelCtrl.$viewValue;
-            } else {
-              this.isOn = false;
-            }
-            if (this.isOn) {
-              $scope.wrapperClass = [self.onstyle, self.size, self.style];
-            } else {
-              $scope.wrapperClass = [self.offstyle, 'off ', self.size, self.style];
+              if (ngModelCtrl.$viewValue) {
+                $scope.wrapperClass = [self.onstyle, self.size, self.style];
+              } else {
+                $scope.wrapperClass = [self.offstyle, 'off ', self.size, self.style];
+              }
             }
           };
 
@@ -150,7 +145,8 @@
         return {
           restrict: 'E',
           transclude: true,
-          template: '<div class="toggle btn" ng-class="wrapperClass" ng-style="wrapperStyle" ng-click="onSwitch()">' +
+          template:
+          '<div class="toggle btn" ng-class="wrapperClass" ng-style="wrapperStyle" ng-click="onSwitch()">' +
           '<div class="toggle-group">' +
           '<label class="btn" ng-class="onClass"></label>' +
           '<label class="btn active" ng-class="offClass"></label>' +
@@ -158,7 +154,7 @@
           '</div>' +
           '</div>',
           scope: {
-            bindModel: '=ngModel'
+            ngModel: '='
           },
           require: ['toggle', 'ngModel'],
           controller: 'ToggleController',
