@@ -5,6 +5,7 @@
     "name": "Tony Wang",
     "email": "ziscloud@gmail.com"
   },
+  "main": "dist/angular-bootstrap-toggle.min.js",
   "dependencies": {},
   "devDependencies": {
     "gulp": "^3.8.7",
