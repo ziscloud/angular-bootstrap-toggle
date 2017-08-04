@@ -8,6 +8,7 @@
   "main": "dist/angular-bootstrap-toggle.min.js",
   "dependencies": {},
   "devDependencies": {
+    "bower": "^1.8.0",
     "gulp": "^3.8.7",
     "gulp-concat": "^2.3.4",
     "gulp-jshint": "^1.8.4",
