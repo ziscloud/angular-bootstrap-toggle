@@ -87,12 +87,13 @@
         })
 
         .controller('ToggleController',
-            ['$scope', '$attrs', '$interpolate', '$log', 'toggleConfig', '$toggleSuppressError',
-                function ($scope, $attrs, $interpolate, $log, toggleConfig, $toggleSuppressError) {
+            ['$scope', '$attrs', '$interpolate', '$log', 'toggleConfig', '$toggleSuppressError', '$timeout',
+                function ($scope, $attrs, $interpolate, $log, toggleConfig, $toggleSuppressError, $timeout) {
                     var self = this;
                     var labels, spans, divs;
                     var ngModelCtrl = {$setViewValue: angular.noop};
                     var toggleConfigKeys = Object.keys(toggleConfig);
+                    var animationDisabled = true;
 
                     // Configuration attributes
                     angular.forEach( toggleConfigKeys, function (k, i) {
@@ -135,7 +136,16 @@
                         self.computeStyle();
 
                         ngModelCtrl.$render = function () {
-                            self.toggle();
+                            self.updateUI();
+
+                            if (animationDisabled) {
+                                // Allow angular to finish the current digest so it
+                                // can render at least once with animation disabled
+                                // then turn animation on
+                                $timeout(function() {
+                                    animationDisabled = false;
+                                });
+                            }
                         };
 
                         // ng-change (for optional onChange event handler)
@@ -201,7 +211,7 @@
                         $scope.handleClass = [self.size , 'toggle-handle'];
                     };
 
-                    this.toggle = function () {
+                    this.updateUI = function () {
                         if (angular.isDefined(ngModelCtrl.$viewValue)) {
                             if (ngModelCtrl.$viewValue) {
                                 $scope.wrapperClass = [self.onstyle, self.size, self.style];
@@ -210,6 +220,9 @@
                             }
                         } else {
                             $scope.wrapperClass = [self.offstyle, 'off ', self.size, self.style];
+                        }
+                        if (animationDisabled) {
+                            $scope.wrapperClass.push('animation-disabled');
                         }
                     };
 
