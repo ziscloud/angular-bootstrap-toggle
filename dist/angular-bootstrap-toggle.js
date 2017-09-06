@@ -98,12 +98,12 @@
                     angular.forEach( toggleConfigKeys, function (k, i) {
                         if (angular.isDefined($attrs[k])) {
                             /*
-                             if (i < toggleConfigKeys.length) {
-                             self[k] = $interpolate($attrs[k])($scope.$parent);
-                             } else {
-                             self[k] = $scope.$parent.$eval($attrs[k]);
-                             }
-                             */
+                            if (i < toggleConfigKeys.length) {
+                                self[k] = $interpolate($attrs[k])($scope.$parent);
+                            } else {
+                                self[k] = $scope.$parent.$eval($attrs[k]);
+                            }
+                            */
                             switch ( typeof toggleConfig[k] ) {
                                 case 'string':
                                     self[k] = $interpolate($attrs[k])($scope.$parent);
@@ -134,8 +134,8 @@
 
                         self.computeStyle();
 
-                        ngModelCtrl.$render = function () {
-                            self.toggle();
+                        ngModelCtrl.$render = function (key, value) {
+                            self.toggle(key, value);
                         }
 
                         // ng-change (for optional onChange event handler)
@@ -193,7 +193,7 @@
                         $scope.handleClass = [self.size , 'toggle-handle'];
                     };
 
-                    this.toggle = function () {
+                    this.toggle = function (key, value) {
                         if (angular.isDefined(ngModelCtrl.$viewValue)) {
                             if (ngModelCtrl.$viewValue) {
                                 $scope.wrapperClass = [self.onstyle, self.size, self.style];
@@ -203,22 +203,27 @@
                         } else {
                             $scope.wrapperClass = [self.offstyle, 'off ', self.size, self.style];
                         }
+                        if (key === 'ngDisabled') {
+                            $scope.toggleDisabled = value;
+                        } else {
+                            $scope.toggleDisabled = false;
+                        }
                     };
 
                     $scope.onSwitch = function (evt) {
-                        if (self.disabled) {    // prevent changing .$viewValue if .disabled == true
+                       if (self.disabled) {    // prevent changing .$viewValue if .disabled == true
                             return false;
-                        } else {
-                            ngModelCtrl.$setViewValue(!ngModelCtrl.$viewValue);
-                            ngModelCtrl.$render();
-                        }
-                        return true;
+                       } else {
+                           ngModelCtrl.$setViewValue(!ngModelCtrl.$viewValue);
+                           ngModelCtrl.$render();
+                       }
+                       return true;
                     };
 
                     // Watchable data attributes
-                    angular.forEach(['ngModel'], function (key) {
+                    angular.forEach(['ngModel', 'ngDisabled'], function (key) {
                         var watch = $scope.$parent.$watch($attrs[key], function (value) {
-                            ngModelCtrl.$render();
+                            ngModelCtrl.$render(key, value);
                         });
                         $scope.$parent.$on('$destroy', function () {
                             watch();
@@ -239,13 +244,13 @@
                 return {
                     restrict: 'E',
                     transclude: true,
-                    template: '<div class="toggle btn" ng-class="wrapperClass" ng-style="wrapperStyle" ng-click="onSwitch($event)">' +
-                    '<div class="toggle-group">' +
-                    '<label class="btn" ng-class="onClass"></label>' +
-                    '<label class="btn active" ng-class="offClass"></label>' +
-                    '<span class="btn btn-default" ng-class="handleClass"></span>' +
-                    '</div>' +
-                    '</div>',
+                    template: '<div class="toggle btn" ng-class="wrapperClass" ng-style="wrapperStyle" ng-click="onSwitch($event)" ng-disabled="toggleDisabled">' +
+                               '<div class="toggle-group">' +
+                                '<label class="btn" ng-class="onClass"></label>' +
+                                '<label class="btn active" ng-class="offClass"></label>' +
+                                '<span class="btn btn-default" ng-class="handleClass"></span>' +
+                               '</div>' +
+                              '</div>',
                     scope: {
                         ngModel: '='
                     },
