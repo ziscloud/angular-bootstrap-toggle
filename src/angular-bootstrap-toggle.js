@@ -87,12 +87,28 @@
         })
 
         .controller('ToggleController',
-            ['$scope', '$attrs', '$interpolate', '$log', 'toggleConfig', '$toggleSuppressError',
-                function ($scope, $attrs, $interpolate, $log, toggleConfig, $toggleSuppressError) {
+            ['$scope', '$attrs', '$interpolate', '$log', 'toggleConfig', '$toggleSuppressError', '$parse',
+                function ($scope, $attrs, $interpolate, $log, toggleConfig, $toggleSuppressError, $parse) {
                     var self = this;
                     var labels, spans, divs;
                     var ngModelCtrl = {$setViewValue: angular.noop};
                     var toggleConfigKeys = Object.keys(toggleConfig);
+
+                    var trueValue = parseConstantExpr($parse, $scope, 'ngTrueValue', $attrs.ngTrueValue, true);
+                    var falseValue = parseConstantExpr($parse, $scope, 'ngFalseValue', $attrs.ngFalseValue, false);
+
+                    function parseConstantExpr($parse, context, name, expression, fallback) {
+                        var parseFn;
+                        if (angular.isDefined(expression)) {
+                            parseFn = $parse(expression);
+                            if (!parseFn.constant) {
+                                throw angular.ngModelMinErr('constexpr', 'Expected constant expression for `{0}`, but saw ' +
+                                    '`{1}`.', name, expression);
+                            }
+                            return parseFn(context);
+                        }
+                        return fallback;
+                    }
 
                     // Configuration attributes
                     angular.forEach( toggleConfigKeys, function (k, i) {
@@ -136,7 +152,7 @@
 
                         ngModelCtrl.$render = function () {
                             self.toggle();
-                        }
+                        };
 
                         // ng-change (for optional onChange event handler)
                         if (angular.isDefined($attrs.ngChange)) {
@@ -195,7 +211,7 @@
 
                     this.toggle = function () {
                         if (angular.isDefined(ngModelCtrl.$viewValue)) {
-                            if (ngModelCtrl.$viewValue) {
+                            if (angular.equals(ngModelCtrl.$viewValue, trueValue)) {
                                 $scope.wrapperClass = [self.onstyle, self.size, self.style];
                             } else {
                                 $scope.wrapperClass = [self.offstyle, 'off ', self.size, self.style];
@@ -209,7 +225,7 @@
                        if (self.disabled) {    // prevent changing .$viewValue if .disabled == true
                             return false;
                        } else {
-                           ngModelCtrl.$setViewValue(!ngModelCtrl.$viewValue);
+                           ngModelCtrl.$setViewValue(!angular.equals(ngModelCtrl.$viewValue, trueValue) ? trueValue : falseValue);
                            ngModelCtrl.$render();
                        }
                        return true;
@@ -260,7 +276,7 @@
                                 toggleCtrl.init(ngModelCtrl);
                             },
                             post: function () {}
-                        }
+                        };
                     }
                 };
             }
