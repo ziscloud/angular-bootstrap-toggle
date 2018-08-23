@@ -41,14 +41,14 @@
              * Description: Class for "on" state from one of standard bootstrap button types.
              * Possible values: btn-default, btn-primary, btn-success, btn-info, btn-warning, btn-danger
              */
-            onstyle: 'btn-primary',
+            onClass: 'btn-primary',
             /**
              * Type: string
              * Default: "btn-default"
              * Description: Class for "off" state from one of standard bootstrap button types.
              * Possible values: btn-default, btn-primary,btn- success, btn-info, btn-warning, btn-danger
              */
-            offstyle: 'btn-default',
+            offClass: 'btn-default',
             /**
              * Type: JSON string
              * Default: ''
@@ -191,20 +191,20 @@
                         }
 
                         // Build arrays that will be passed to widget's ng-class.
-                        $scope.onClass     = [self.onstyle , self.size, 'toggle-on'];
-                        $scope.offClass    = [self.offstyle, self.size, 'toggle-off'];
+                        $scope.onClass     = [self.onClass , self.size, 'toggle-on'];
+                        $scope.offClass    = [self.offClass, self.size, 'toggle-off'];
                         $scope.handleClass = [self.size , 'toggle-handle'];
                     };
 
                     this.toggle = function () {
                         if (angular.isDefined(ngModelCtrl.$viewValue)) {
                             if (ngModelCtrl.$viewValue) {
-                                $scope.wrapperClass = [self.onstyle, self.size, self.style];
+                                $scope.wrapperClass = [self.onClass, self.size, self.style];
                             } else {
-                                $scope.wrapperClass = [self.offstyle, 'off ', self.size, self.style];
+                                $scope.wrapperClass = [self.offClass, 'off ', self.size, self.style];
                             }
                         } else {
-                            $scope.wrapperClass = [self.offstyle, 'off ', self.size, self.style];
+                            $scope.wrapperClass = [self.offClass, 'off ', self.size, self.style];
                         }
                     };
 
