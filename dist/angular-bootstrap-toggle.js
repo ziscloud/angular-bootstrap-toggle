@@ -77,11 +77,11 @@
              * manipulates this attribute, plus there is additional code that propagates its value to child elements.
              * Applying "disabled" to <toggle> itself apparently does nothing, but when its value is propagated to
              * two child <label> elements, it allows us to disable the widget.
-             * Note that attribute "diasbled" is not the same as ng-disabled Angular directive. In most cases, you should
-             * use <toggle ... ng-disabled="expression"> (not <toggle ... disabled="{{expression}}">) for this to work
-             * properly.
-             * [Per HTML specs, the "disabled" property does not need a value. Just mentioning it is enough. Angular will,
-             * however, also add the value "disabled" (< ... disabled="disabled">)]
+             * Note that attribute "diasbled" is not the same as ng-disabled Angular directive. In most cases, you
+             * should use <toggle ... ng-disabled="expression"> (not <toggle ... disabled="{{expression}}">) for this
+             * to work properly.
+             * [Per HTML specs, the "disabled" property does not need a value. Just mentioning it is enough. Angular
+             * will, however, also add the value "disabled" (< ... disabled="disabled">)]
              */
             disabled: false,
         })
@@ -98,12 +98,12 @@
                     angular.forEach( toggleConfigKeys, function (k, i) {
                         if (angular.isDefined($attrs[k])) {
                             /*
-                             if (i < toggleConfigKeys.length) {
-                             self[k] = $interpolate($attrs[k])($scope.$parent);
-                             } else {
-                             self[k] = $scope.$parent.$eval($attrs[k]);
-                             }
-                             */
+                            if (i < toggleConfigKeys.length) {
+                                self[k] = $interpolate($attrs[k])($scope.$parent);
+                            } else {
+                                self[k] = $scope.$parent.$eval($attrs[k]);
+                            }
+                            */
                             switch ( typeof toggleConfig[k] ) {
                                 case 'string':
                                     self[k] = $interpolate($attrs[k])($scope.$parent);
@@ -136,7 +136,7 @@
 
                         ngModelCtrl.$render = function () {
                             self.toggle();
-                        }
+                        };
 
                         // ng-change (for optional onChange event handler)
                         if (angular.isDefined($attrs.ngChange)) {
@@ -162,8 +162,10 @@
                         if (self.width) {
                             $scope.wrapperStyle.width = self.width;
                         } else {
-                            // INCORRECT MATH - spans[0] overlaps two side-by-side LABEL's. Half of its width should not be included in the total.
-                            //var wrapperComputedWidth = Math.max(labels[0].offsetWidth, labels[1].offsetWidth) + (spans[0].offsetWidth / 2);
+                            // INCORRECT MATH - spans[0] overlaps two side-by-side LABEL's. Half of its width should not
+                            // be included in the total.
+                            //var wrapperComputedWidth = Math.max(labels[0].offsetWidth, labels[1].offsetWidth) +
+                            // (spans[0].offsetWidth / 2);
                             var wrapperComputedWidth = Math.max(labels[0].offsetWidth, labels[1].offsetWidth);
                             var wrapperWidth = divs[0].offsetWidth;
 
@@ -180,8 +182,9 @@
                             var wrapperComputedHeight = Math.max(labels[0].offsetHeight, labels[1].offsetHeight);
                             var wrapperHeight = divs[1].offsetHeight;
 
-                            if (wrapperHeight < wrapperComputedHeight && self.size !== 'btn-xs' && self.size !== 'btn-sm') {
-                                $scope.wrapperStyle.height = wrapperComputedHeight + 'px';
+                            if (wrapperHeight < wrapperComputedHeight &&
+                              self.size !== 'btn-xs' && self.size !== 'btn-sm') {
+                              $scope.wrapperStyle.height = wrapperComputedHeight + 'px';
                             } else {
                                 $scope.wrapperStyle.height = wrapperHeight + 'px';
                             }
@@ -206,13 +209,13 @@
                     };
 
                     $scope.onSwitch = function (evt) {
-                        if (self.disabled) {    // prevent changing .$viewValue if .disabled == true
+                       if (self.disabled) {    // prevent changing .$viewValue if .disabled == true
                             return false;
-                        } else {
-                            ngModelCtrl.$setViewValue(!ngModelCtrl.$viewValue);
-                            ngModelCtrl.$render();
-                        }
-                        return true;
+                       } else {
+                           ngModelCtrl.$setViewValue(!ngModelCtrl.$viewValue);
+                           ngModelCtrl.$render();
+                       }
+                       return true;
                     };
 
                     // Watchable data attributes
@@ -239,13 +242,14 @@
                 return {
                     restrict: 'E',
                     transclude: true,
-                    template: '<div class="toggle btn" ng-class="wrapperClass" ng-style="wrapperStyle" ng-click="onSwitch($event)">' +
-                    '<div class="toggle-group">' +
-                    '<label class="btn" ng-class="onClass"></label>' +
-                    '<label class="btn active" ng-class="offClass"></label>' +
-                    '<span class="btn btn-default" ng-class="handleClass"></span>' +
-                    '</div>' +
-                    '</div>',
+                    template: '<div class="toggle btn" ng-class="wrapperClass" ng-style="wrapperStyle"' +
+                                'ng-click="onSwitch($event)">' +
+                                '<div class="toggle-group">' +
+                                '<label class="btn" ng-class="onClass"></label>' +
+                                '<label class="btn active" ng-class="offClass"></label>' +
+                                '<span class="btn btn-default" ng-class="handleClass"></span>' +
+                               '</div>' +
+                              '</div>',
                     scope: {
                         ngModel: '='
                     },
@@ -260,7 +264,7 @@
                                 toggleCtrl.init(ngModelCtrl);
                             },
                             post: function () {}
-                        }
+                        };
                     }
                 };
             }
