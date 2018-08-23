@@ -42,6 +42,7 @@
              * Possible values: btn-default, btn-primary, btn-success, btn-info, btn-warning, btn-danger
              */
             onClass: 'btn-primary',
+            onstyle: '', /* for backward compatibility only */
             /**
              * Type: string
              * Default: "btn-default"
@@ -49,6 +50,7 @@
              * Possible values: btn-default, btn-primary,btn- success, btn-info, btn-warning, btn-danger
              */
             offClass: 'btn-default',
+            offstyle: '', /* for some backward compatibility only */
             /**
              * Type: JSON string
              * Default: ''
@@ -118,6 +120,15 @@
                             self[k] = toggleConfig[k];
                         }
                     });
+
+                    // Special treatment for onstyle and offstyle:
+                    // If set, we will use their values for onClass and offClass respectively
+                    if (self.onstyle) {
+                      self.onClass = self.onstyle;
+                    }
+                    if (self.offstyle) {
+                      self.offClass = self.offstyle;
+                    }
 
                     this.init = function (ngModelCtrl_) {
                         ngModelCtrl = ngModelCtrl_;
