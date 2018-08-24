@@ -93,19 +93,12 @@
                 function ($scope, $attrs, $interpolate, $log, toggleConfig, $toggleSuppressError) {
                     var self = this;
                     var labels, spans, divs;
-                    var ngModelCtrl = {$setViewValue: angular.noop};
+                    var ngModelCtrl;
                     var toggleConfigKeys = Object.keys(toggleConfig);
 
                     // Configuration attributes
                     angular.forEach( toggleConfigKeys, function (k, i) {
                         if (angular.isDefined($attrs[k])) {
-                            /*
-                            if (i < toggleConfigKeys.length) {
-                                self[k] = $interpolate($attrs[k])($scope.$parent);
-                            } else {
-                                self[k] = $scope.$parent.$eval($attrs[k]);
-                            }
-                            */
                             switch ( typeof toggleConfig[k] ) {
                                 case 'string':
                                     self[k] = $interpolate($attrs[k])($scope.$parent);
@@ -121,7 +114,7 @@
                         }
                     });
 
-                    // Special treatment for onstyle and offstyle:
+                    // Special treatment for onstyle and offstyle, now deprecated attributes:
                     // If set, we will use their values for onClass and offClass respectively
                     if (self.onstyle) {
                       self.onClass = self.onstyle;
@@ -133,15 +126,18 @@
                     this.init = function (ngModelCtrl_) {
                         ngModelCtrl = ngModelCtrl_;
 
-                        labels = self.element.find('label');
-                        spans  = self.element.find('span');
-                        divs   = self.element.find('div');
-                        // ^-- divs[0] is the DIV that has class="toggle btn"
-                        //     divs[1] is a child of [0] and has class="toggle-group"
+                        var labels = self.element.find('label');
+                        var spans  = self.element.find('span');
+                        var divs   = self.element.find('div');
+
+                        self.wrapperElement = divs[0];
+                        self.onElement = labels[0];
+                        self.offElement = labels[1];
+                        self.handleElement = spans[0];
 
                         // Set wigget's visible text such as On/Off or Enable/Disable
-                        angular.element(labels[0]).html(self.on);
-                        angular.element(labels[1]).html(self.off);
+                        angular.element(self.onElement).html(self.on);
+                        angular.element(self.offElement).html(self.off);
 
                         self.computeStyle();
 
@@ -163,18 +159,21 @@
                         // The property must be propagated to lables and span inside the toggle-group container. This
                         // triggers .btn[disabled] style (cursor: not-allowed; opacity: 0.65;) but it does not prohibit
                         // the click event. Click event is handled in .onSwitch().
-                        angular.element(labels[0]).attr('disabled', self.disabled);
-                        angular.element(labels[1]).attr('disabled', self.disabled);
-                        angular.element( spans[0]).attr('disabled', self.disabled);
+                        angular.element(self.onElement).attr('disabled', self.disabled);
+                        angular.element(self.offElement).attr('disabled', self.disabled);
+                        angular.element(self.handleElement).attr('disabled', self.disabled);
 
                         // Build an object for widget's ng-style
                         $scope.wrapperStyle = (self.toggleStyle) ? $scope.$parent.$eval(self.toggleStyle) : {};
 
+                        // Calculate the proper width
                         if (self.width) {
                             $scope.wrapperStyle.width = self.width;
                         } else {
-                          var wrapperComputedWidth = Math.max(labels[0].scrollWidth, labels[1].scrollWidth) + 24;
-                          var wrapperWidth = divs[0].scrollWidth;
+                          var wrapperComputedWidth = Math.max(
+                            self.onElement.scrollWidth,
+                            self.offElement.scrollWidth) + 24;
+                          var wrapperWidth = self.wrapperElement.scrollWidth;
 
                             if (wrapperWidth < wrapperComputedWidth) {
                                 $scope.wrapperStyle.width = wrapperComputedWidth + 'px';
@@ -183,11 +182,14 @@
                             }
                         }
 
+                        // Calculate the proper height
                         if (self.height) {
                             $scope.wrapperStyle.height = self.height;
                         } else {
-                            var wrapperComputedHeight = Math.max(labels[0].offsetHeight, labels[1].offsetHeight);
-                            var wrapperHeight = divs[1].offsetHeight;
+                            var wrapperComputedHeight = Math.max(
+                              self.onElement.offsetHeight,
+                              self.offElement.offsetHeight);
+                            var wrapperHeight = self.wrapperElement.offsetHeight;
 
                             if (wrapperHeight < wrapperComputedHeight &&
                               self.size !== 'btn-xs' && self.size !== 'btn-sm') {
@@ -198,21 +200,21 @@
                         }
 
                         // Build arrays that will be passed to widget's ng-class.
-                        $scope.onClass     = [self.onClass , self.size, 'toggle-on'];
-                        $scope.offClass    = [self.offClass, self.size, 'toggle-off'];
-                        $scope.handleClass = [self.size , 'toggle-handle'];
+                        $scope.onComputedClass     = [self.onClass , self.size, 'toggle-on'];
+                        $scope.offComputedClass    = [self.offClass, self.size, 'toggle-off'];
+                        $scope.handleComputedClass = [self.size , 'toggle-handle'];
                     };
 
                     this.toggle = function () {
-                        if (angular.isDefined(ngModelCtrl.$viewValue)) {
-                            if (ngModelCtrl.$viewValue) {
-                                $scope.wrapperClass = [self.onClass, self.size, self.style];
-                            } else {
-                                $scope.wrapperClass = [self.offClass, 'off ', self.size, self.style];
-                            }
-                        } else {
-                            $scope.wrapperClass = [self.offClass, 'off ', self.size, self.style];
-                        }
+                      if (ngModelCtrl.$viewValue) {
+                        angular.element(self.wrapperElement).
+                          removeClass('off ' + self.offClass).
+                          addClass(self.onClass);
+                      } else {
+                        angular.element(self.wrapperElement).
+                          addClass('off ' + self.offClass).
+                          removeClass(self.onClass);
+                      }
                     };
 
                     $scope.onSwitch = function (evt) {
@@ -224,16 +226,6 @@
                        }
                        return true;
                     };
-
-                    // Watchable data attributes
-                    angular.forEach(['ngModel'], function (key) {
-                        var watch = $scope.$parent.$watch($attrs[key], function (value) {
-                            ngModelCtrl.$render();
-                        });
-                        $scope.$parent.$on('$destroy', function () {
-                            watch();
-                        });
-                    });
 
                     angular.forEach( toggleConfigKeys, function (k, i) {
                         $attrs.$observe(k, function (v) {
@@ -248,13 +240,12 @@
         .directive('toggle', function () {
                 return {
                     restrict: 'E',
-                    transclude: true,
-                    template: '<div class="toggle btn" ng-class="wrapperClass" ng-style="wrapperStyle"' +
+                    template: '<div ng-cloak class="toggle btn off" ng-style="wrapperStyle"' +
                                 'ng-click="onSwitch($event)">' +
                                 '<div class="toggle-group">' +
-                                '<label class="btn" ng-class="onClass"></label>' +
-                                '<label class="btn active" ng-class="offClass"></label>' +
-                                '<span class="btn btn-default" ng-class="handleClass"></span>' +
+                                '<label class="btn" ng-class="onComputedClass"></label>' +
+                                '<label class="btn active" ng-class="offComputedClass"></label>' +
+                                '<span class="btn btn-default" ng-class="handleComputedClass"></span>' +
                                '</div>' +
                               '</div>',
                     scope: {
@@ -265,12 +256,12 @@
                     controllerAs: 'toggle',
                     compile: function (element, attrs, transclude) {
                         return {
-                            pre: function (scope, element, attrs, ctrls) {
+                            post: function (scope, element, attrs, ctrls) {
                                 var toggleCtrl = ctrls[0], ngModelCtrl = ctrls[1];
                                 toggleCtrl.element = element;
                                 toggleCtrl.init(ngModelCtrl);
                             },
-                            post: function () {}
+                            pre: function () {}
                         };
                     }
                 };
