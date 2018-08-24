@@ -173,12 +173,8 @@
                         if (self.width) {
                             $scope.wrapperStyle.width = self.width;
                         } else {
-                            // INCORRECT MATH - spans[0] overlaps two side-by-side LABEL's. Half of its width should not
-                            // be included in the total.
-                            //var wrapperComputedWidth = Math.max(labels[0].offsetWidth, labels[1].offsetWidth) +
-                            // (spans[0].offsetWidth / 2);
-                            var wrapperComputedWidth = Math.max(labels[0].offsetWidth, labels[1].offsetWidth);
-                            var wrapperWidth = divs[0].offsetWidth;
+                          var wrapperComputedWidth = Math.max(labels[0].scrollWidth, labels[1].scrollWidth) + 24;
+                          var wrapperWidth = divs[0].scrollWidth;
 
                             if (wrapperWidth < wrapperComputedWidth) {
                                 $scope.wrapperStyle.width = wrapperComputedWidth + 'px';
