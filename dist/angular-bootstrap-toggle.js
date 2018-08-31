@@ -172,14 +172,8 @@
                         } else {
                           var wrapperComputedWidth = Math.max(
                             self.onElement.scrollWidth,
-                            self.offElement.scrollWidth) + 24;
-                          var wrapperWidth = self.wrapperElement.scrollWidth;
-
-                            if (wrapperWidth < wrapperComputedWidth) {
-                                $scope.wrapperStyle.width = wrapperComputedWidth + 'px';
-                            } else {
-                                $scope.wrapperStyle.width = wrapperWidth + 'px';
-                            }
+                            self.offElement.scrollWidth) + 12;
+                          $scope.wrapperStyle.width = wrapperComputedWidth + 'px';
                         }
 
                         // Calculate the proper height
