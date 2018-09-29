@@ -34,12 +34,21 @@ describe('', function () {
   });
 
   it('should have customized label elements', function () {
-    directiveElem = getCompiledElement('<toggle ng-model="model" ng-change="toggleStatus(m)" on="Enabled" off="Disabled"></toggle>')
+    directiveElem = getCompiledElement('<toggle ng-model="model" ng-change="toggleStatus(m)" on="Enabled" off="Disabled"></toggle>');
     var labelElement = directiveElem.find('label');
 
     expect(labelElement).toBeDefined();
     expect(angular.element(labelElement[0]).text()).toEqual('Enabled');
     expect(angular.element(labelElement[1]).text()).toEqual('Disabled');
+  });
+
+  it('should have customized classes', function () {
+    directiveElem = getCompiledElement('<toggle ng-model="model" on-class="btn-danger" off-class="btn-success"></toggle>');
+    var labelElement = directiveElem.find('label');
+
+    expect(labelElement).toBeDefined();
+    expect(angular.element(labelElement[0]).hasClass('btn-danger')).toBe(true);
+    expect(angular.element(labelElement[1]).hasClass('btn-success')).toBe(true);
   });
 
   it('ngChange should be called', function () {

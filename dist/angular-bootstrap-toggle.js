@@ -65,6 +65,13 @@
             /**
              * Type: string
              * Default: ''
+             * Description: Passes a class to the toggle's first immediate child
+             **/
+            toggleClass: '',
+            style: '',
+            /**
+             * Type: string
+             * Default: ''
              * Description: Allows to force width and height to specified value. Use css notation such as 50px, 1%. etc.
              * This is useful when you have a group of toggles with different text in the lables and, therefore,
              * would never line-up to the same width.
@@ -89,8 +96,8 @@
         })
 
         .controller('ToggleController',
-            ['$scope', '$attrs', '$interpolate', '$log', 'toggleConfig', '$toggleSuppressError',
-                function ($scope, $attrs, $interpolate, $log, toggleConfig, $toggleSuppressError) {
+            ['$scope', '$attrs', '$interpolate', '$log', '$document', 'toggleConfig', '$toggleSuppressError',
+                function ($scope, $attrs, $interpolate, $log, $document, toggleConfig, $toggleSuppressError) {
                     var self = this;
                     var labels, spans, divs;
                     var ngModelCtrl;
@@ -122,6 +129,18 @@
                     if (self.offstyle) {
                       self.offClass = self.offstyle;
                     }
+                    // Special treatment for style, now deprecated and replaced with toggleClass
+                    if (self.style) {
+                      self.toggleClass = self.style;
+                    }
+
+                    // Special case: empty on and off labels (replace with blank space)
+                    if (self.on === '') {
+                      self.on = '&nbsp;';
+                    }
+                    if (self.off === '') {
+                      self.off = '&nbsp;';
+                    }
 
                     this.init = function (ngModelCtrl_) {
                         ngModelCtrl = ngModelCtrl_;
@@ -139,6 +158,40 @@
                         angular.element(self.onElement).html(self.on);
                         angular.element(self.offElement).html(self.off);
 
+                        // Set the button size
+                        angular.element(self.wrapperElement).addClass(self.size);
+                        angular.element(self.onElement).addClass(self.size);
+                        angular.element(self.offElement).addClass(self.size);
+                        angular.element(self.handleElement).addClass(self.size);
+
+                        // Set the toggleClass on the wrapper
+                        angular.element(self.wrapperElement).addClass(self.toggleClass);
+
+                        // Calculate the propery width
+                        if (!self.width) {
+                          var wrapperComputedWidth = Math.max(
+                            self.onElement.scrollWidth,
+                            self.offElement.scrollWidth
+                          ) + Math.max(self.handleElement.scrollWidth, 16) / 2 + 2;
+                          self.width = wrapperComputedWidth + 'px';
+                        }
+
+                        // Calculate the proper height
+                        if (!self.height) {
+                            var wrapperComputedHeight = Math.max(
+                              self.onElement.scrollHeight,
+                              self.offElement.scrollHeight) + 2;
+                            self.height = wrapperComputedHeight + 'px';
+                        }
+
+                        // Add the toggle-on and toggle-off classes, that change position and size of the labels
+                        // and make sure that the buttons are properly placed.
+                        // Once this is done, the height and width properties of the labels is no longer relevant,
+                        // because of their new placement.
+                        angular.element(self.onElement).addClass(self.onClass).addClass('toggle-on');
+                        angular.element(self.offElement).addClass(self.offClass).addClass('toggle-off');
+
+                        // Compute first style
                         self.computeStyle();
 
                         ngModelCtrl.$render = function () {
@@ -165,38 +218,9 @@
 
                         // Build an object for widget's ng-style
                         $scope.wrapperStyle = (self.toggleStyle) ? $scope.$parent.$eval(self.toggleStyle) : {};
+                        $scope.wrapperStyle.width = self.width;
+                        $scope.wrapperStyle.height = self.height;
 
-                        // Calculate the proper width
-                        if (self.width) {
-                            $scope.wrapperStyle.width = self.width;
-                        } else {
-                          var wrapperComputedWidth = Math.max(
-                            self.onElement.scrollWidth,
-                            self.offElement.scrollWidth) + 12;
-                          $scope.wrapperStyle.width = wrapperComputedWidth + 'px';
-                        }
-
-                        // Calculate the proper height
-                        if (self.height) {
-                            $scope.wrapperStyle.height = self.height;
-                        } else {
-                            var wrapperComputedHeight = Math.max(
-                              self.onElement.offsetHeight,
-                              self.offElement.offsetHeight);
-                            var wrapperHeight = self.wrapperElement.offsetHeight;
-
-                            if (wrapperHeight < wrapperComputedHeight &&
-                              self.size !== 'btn-xs' && self.size !== 'btn-sm') {
-                              $scope.wrapperStyle.height = wrapperComputedHeight + 'px';
-                            } else {
-                                $scope.wrapperStyle.height = wrapperHeight + 'px';
-                            }
-                        }
-
-                        // Build arrays that will be passed to widget's ng-class.
-                        $scope.onComputedClass     = [self.onClass , self.size, 'toggle-on'];
-                        $scope.offComputedClass    = [self.offClass, self.size, 'toggle-off'];
-                        $scope.handleComputedClass = [self.size , 'toggle-handle'];
                     };
 
                     this.toggle = function () {
@@ -229,6 +253,7 @@
                             }
                         });
                     });
+
                 }])
 
         .directive('toggle', function () {
@@ -237,9 +262,9 @@
                     template: '<div ng-cloak class="toggle btn off" ng-style="wrapperStyle"' +
                                 'ng-click="onSwitch($event)">' +
                                 '<div class="toggle-group">' +
-                                '<label class="btn" ng-class="onComputedClass"></label>' +
-                                '<label class="btn active" ng-class="offComputedClass"></label>' +
-                                '<span class="btn btn-default" ng-class="handleComputedClass"></span>' +
+                                '<label class="btn toggle-on-pad"></label>' +
+                                '<label class="btn toggle-off-pad active"></label>' +
+                                '<span class="btn btn-default toggle-handle"></span>' +
                                '</div>' +
                               '</div>',
                     scope: {
