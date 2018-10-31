@@ -1,38 +1,8 @@
-(function() {
+(function () {
 	"use strict";
-	if (window.IntersectionObserver) {
-		$.event.special.visibility = {
-			setup: function() {
-				function event(visibility) {
-					var e = $.Event("visibility");
-					e.visible = visibility;
-					return e;
-				}
-
-				var element = this;
-				var $element = $(this);
-				var observer = new IntersectionObserver(function(entries) {
-						var e = event($element.is(":visible"));
-						($.event.dispatch || $.event.handle).call(element, e);
-					},
-					{
-						root: document.body
-					});
-				observer.observe(this);
-				$.data(this, "observer", observer);
-			},
-			teardown: function() {
-				var observer = $.data(this, "observer");
-				if (observer) {
-					observer.unobserve(this);
-					$.removeData(this, "observer");
-				}
-			}
-		};
-	};
-	angular.module("ui.toggle", [])
-		.value("$toggleSuppressError", false)
-		.constant("toggleConfig",
+	angular.module('ui.toggle', [])
+		.value('$toggleSuppressError', false)
+		.constant('toggleConfig',
 			{
 				/**
 				 * This object defines supported toggle widget attributes and their default values.
@@ -46,13 +16,13 @@
 				'btnCheckboxTrue': true,
 				/**
 				 * Type: string/html
-				 * Default: "On"
+				 * Default: 'On'
 				 * Description: Text of the on toggle
 				 */
 				on: "On",
 				/**
 				 * Type: string/html
-				 * Default: "Off"
+				 * Default: 'Off'
 				 * Description: Text of the off toggle
 				 */
 				off: "Off",
@@ -65,16 +35,16 @@
 				size: "",
 				/**
 				 * Type: string
-				 * Default: "btn-primary"
-				 * Description: Class for "on" state from one of standard bootstrap button types.
+				 * Default: 'btn-primary'
+				 * Description: Class for 'on' state from one of standard bootstrap button types.
 				 * Possible values: btn-default, btn-primary, btn-success, btn-info, btn-warning, btn-danger
 				 */
 				onClass: "btn-primary",
 				onstyle: "", /* for backward compatibility only */
 				/**
 				 * Type: string
-				 * Default: "btn-default"
-				 * Description: Class for "off" state from one of standard bootstrap button types.
+				 * Default: 'btn-default'
+				 * Description: Class for 'off' state from one of standard bootstrap button types.
 				 * Possible values: btn-default, btn-primary,btn- success, btn-info, btn-warning, btn-danger
 				 */
 				offClass: "btn-default",
@@ -84,10 +54,10 @@
 				 * Default: ''
 				 * Description: Allows to pass user-defined style to the toggle's first immediate child (first DIV inside
 				 * <toggle ...> which is what you actually see as widget's outer container).
-				 * This can be used to alter widget's appearance. Use with caution! Note that "width" and "height" values
-				 * will be overwritten by either auto-calculated values or used-specified values from "width" and "height"
+				 * This can be used to alter widget's appearance. Use with caution! Note that 'width' and 'height' values
+				 * will be overwritten by either auto-calculated values or used-specified values from 'width' and 'height'
 				 * attributes.
-				 * Example: <toggle ... toggle-style="{'border': '1px dashed #f00'}">
+				 * Example: <toggle ... toggle-style='{'border': '1px dashed #f00'}'>
 				 */
 				toggleStyle: "",
 				/**
@@ -103,29 +73,29 @@
 				 * Description: Allows to force width and height to specified value. Use css notation such as 50px, 1%. etc.
 				 * This is useful when you have a group of toggles with different text in the lables and, therefore,
 				 * would never line-up to the same width.
-				 * Example: <toggle ... width="90px">
+				 * Example: <toggle ... width='90px'>
 				 */
 				width: "",
 				height: "",
 				/**
 				 * Type: boolean
 				 * Default: false
-				 * Description: Defines "disabled" attribute for the <toggle> directive itself. The ng-disabled dirrective
+				 * Description: Defines 'disabled' attribute for the <toggle> directive itself. The ng-disabled dirrective
 				 * manipulates this attribute, plus there is additional code that propagates its value to child elements.
-				 * Applying "disabled" to <toggle> itself apparently does nothing, but when its value is propagated to
+				 * Applying 'disabled' to <toggle> itself apparently does nothing, but when its value is propagated to
 				 * two child <label> elements, it allows us to disable the widget.
-				 * Note that attribute "diasbled" is not the same as ng-disabled Angular directive. In most cases, you
-				 * should use <toggle ... ng-disabled="expression"> (not <toggle ... disabled="{{expression}}">) for this
+				 * Note that attribute 'diasbled' is not the same as ng-disabled Angular directive. In most cases, you
+				 * should use <toggle ... ng-disabled='expression'> (not <toggle ... disabled='{{expression}}'>) for this
 				 * to work properly.
-				 * [Per HTML specs, the "disabled" property does not need a value. Just mentioning it is enough. Angular
-				 * will, however, also add the value "disabled" (< ... disabled="disabled">)]
+				 * [Per HTML specs, the 'disabled' property does not need a value. Just mentioning it is enough. Angular
+				 * will, however, also add the value 'disabled' (< ... disabled='disabled'>)]
 				 */
 				disabled: false,
 			})
 		.controller("ToggleController",
 			[
 				"$scope", "$attrs", "$interpolate", "$log", "$document", "toggleConfig", "$toggleSuppressError",
-				function($scope, $attrs, $interpolate, $log, $document, toggleConfig, $toggleSuppressError) {
+				function ($scope, $attrs, $interpolate, $log, $document, toggleConfig, $toggleSuppressError) {
 					var self = this;
 					var labels, spans, divs;
 					var ngModelCtrl;
@@ -133,17 +103,17 @@
 
 					// Configuration attributes
 					angular.forEach(toggleConfigKeys,
-						function(k, i) {
+						function (k, i) {
 							if (angular.isDefined($attrs[k])) {
 								switch (typeof toggleConfig[k]) {
-								case "string":
-									self[k] = $interpolate($attrs[k])($scope.$parent);
-									break;
-								case "function":
-									// TBD
-									break;
-								default:
-									self[k] = $scope.$parent.$eval($attrs[k]);
+									case "string":
+										self[k] = $interpolate($attrs[k])($scope.$parent);
+										break;
+									case "function":
+										// TBD
+										break;
+									default:
+										self[k] = $scope.$parent.$eval($attrs[k]);
 								}
 							} else { // use default from toggleConfig
 								self[k] = toggleConfig[k];
@@ -170,9 +140,8 @@
 					if (self.off === "") {
 						self.off = "&nbsp;";
 					}
-
-
-					var evaluateSize = function(reevaluate) {
+					
+					var evaluateSize = function (reevaluate) {
 						// Calculate the propery width
 						if (!self.width || reevaluate) {
 							var wrapperComputedWidth = Math.max(
@@ -194,7 +163,7 @@
 						}
 					};
 
-					this.init = function(ngModelCtrl_) {
+					this.init = function (ngModelCtrl_) {
 						ngModelCtrl = ngModelCtrl_;
 
 						var labels = self.element.find("label");
@@ -206,28 +175,35 @@
 						self.offElement = labels[1];
 						self.handleElement = spans[0];
 
+						var onElement = angular.element(self.onElement);
+
 						// Set wigget's visible text such as On/Off or Enable/Disable
-						angular.element(self.onElement).html(self.on);
+						onElement.html(self.on);
 						angular.element(self.offElement).html(self.off);
 
 						// Set the button size
 						angular.element(self.wrapperElement).addClass(self.size);
-						angular.element(self.onElement).addClass(self.size);
+						onElement.addClass(self.size);
 						angular.element(self.offElement).addClass(self.size);
 						angular.element(self.handleElement).addClass(self.size);
 
 						// Set the toggleClass on the wrapper
 						angular.element(self.wrapperElement).addClass(self.toggleClass);
-						var jElement = $(this.onElement);
-						if (!jElement.is(":visible")) {
-							jElement.on("visibility.toggle",
-								() => {
-									if (jElement.is(":visible")) {
+
+						if (!onElement.is(":visible")) {
+							if (window.IntersectionObserver) {
+								var observer = new IntersectionObserver(function () {
+									if (onElement.is(":visible")) {
 										evaluateSize(true);
 										self.computeStyle();
-										jElement.off("visibility.toggle");
+										observer.disconnect(onElement);
 									}
-								});
+								},
+									{
+										root: null,
+									});
+								observer.observe(this.onElement);
+							}
 						}
 						evaluateSize(false);
 
@@ -241,19 +217,19 @@
 						// Compute first style
 						self.computeStyle();
 
-						ngModelCtrl.$render = function() {
+						ngModelCtrl.$render = function () {
 							self.toggle();
 						};
 
 						// ng-change (for optional onChange event handler)
 						if (angular.isDefined($attrs.ngChange)) {
-							ngModelCtrl.$viewChangeListeners.push(function() {
+							ngModelCtrl.$viewChangeListeners.push(function () {
 								$scope.$eval($attrs.ngChange);
 							});
 						}
 					};
 
-					this.computeStyle = function() {
+					this.computeStyle = function () {
 						// Set wigget's disabled state.
 						// This action is unrelated to computing the style, but this function is the right place for it.
 						// The property must be propagated to lables and span inside the toggle-group container. This
@@ -270,7 +246,7 @@
 
 					};
 
-					this.toggle = function() {
+					this.toggle = function () {
 						if (ngModelCtrl.$viewValue) {
 							angular.element(self.wrapperElement).removeClass("off " + self.offClass)
 								.addClass(self.onClass);
@@ -280,7 +256,7 @@
 						}
 					};
 
-					$scope.onSwitch = function(evt) {
+					$scope.onSwitch = function (evt) {
 						if (self.disabled) { // prevent changing .$viewValue if .disabled == true
 							return false;
 						} else {
@@ -291,9 +267,9 @@
 					};
 
 					angular.forEach(toggleConfigKeys,
-						function(k, i) {
+						function (k, i) {
 							$attrs.$observe(k,
-								function(v) {
+								function (v) {
 									if (self[k] !== v) {
 										self[k] = v;
 										self.computeStyle();
@@ -304,15 +280,15 @@
 				}
 			])
 		.directive("toggle",
-			function() {
+			function () {
 				return {
 					restrict: "E",
-					template: '<div ng-cloak class="toggle btn off" ng-style="wrapperStyle"' +
-						'ng-click="onSwitch($event)">' +
-						'<div class="toggle-group">' +
-						'<label class="btn toggle-on-pad"></label>' +
-						'<label class="btn toggle-off-pad active"></label>' +
-						'<span class="btn btn-default toggle-handle"></span>' +
+					template: "<div ng-cloak class='toggle btn off' ng-style='wrapperStyle'" +
+						"ng-click='onSwitch($event)'>" +
+						"<div class='toggle-group'>" +
+						"<label class='btn toggle-on-pad'></label>" +
+						"<label class='btn toggle-off-pad active'></label>" +
+						"<span class='btn btn-default toggle-handle'></span>" +
 						"</div>" +
 						"</div>",
 					scope: {
@@ -321,14 +297,14 @@
 					require: ["toggle", "ngModel"],
 					controller: "ToggleController",
 					controllerAs: "toggle",
-					compile: function(element, attrs, transclude) {
+					compile: function (element, attrs, transclude) {
 						return {
-							post: function(scope, element, attrs, ctrls) {
+							post: function (scope, element, attrs, ctrls) {
 								var toggleCtrl = ctrls[0], ngModelCtrl = ctrls[1];
 								toggleCtrl.element = element;
 								toggleCtrl.init(ngModelCtrl);
 							},
-							pre: function() {}
+							pre: function () { }
 						};
 					}
 				};
