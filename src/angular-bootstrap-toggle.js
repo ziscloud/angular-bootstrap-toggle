@@ -16,79 +16,79 @@
 				'btnCheckboxTrue': true,
 				/**
 				 * Type: string/html
-				 * Default: 'On'
+				 * Default: "On"
 				 * Description: Text of the on toggle
 				 */
 				on: 'On',
 				/**
 				 * Type: string/html
-				 * Default: 'Off'
+				 * Default: "Off"
 				 * Description: Text of the off toggle
 				 */
 				off: 'Off',
 				/**
 				 * Type: string
-				 * Default: ''
+				 * Default: ""
 				 * Description: Allows to specify one of the standarg bootstrap's button sizes (class).
 				 * Possible values are btn-lg, btn-sm, btn-xs.
 				 */
 				size: '',
 				/**
 				 * Type: string
-				 * Default: 'btn-primary'
-				 * Description: Class for 'on' state from one of standard bootstrap button types.
+				 * Default: "btn-primary"
+				 * Description: Class for "on" state from one of standard bootstrap button types.
 				 * Possible values: btn-default, btn-primary, btn-success, btn-info, btn-warning, btn-danger
 				 */
 				onClass: 'btn-primary',
 				onstyle: '', /* for backward compatibility only */
 				/**
 				 * Type: string
-				 * Default: 'btn-default'
-				 * Description: Class for 'off' state from one of standard bootstrap button types.
+				 * Default: "btn-default"
+				 * Description: Class for "off" state from one of standard bootstrap button types.
 				 * Possible values: btn-default, btn-primary,btn- success, btn-info, btn-warning, btn-danger
 				 */
 				offClass: 'btn-default',
 				offstyle: '', /* for some backward compatibility only */
 				/**
 				 * Type: JSON string
-				 * Default: ''
+				 * Default: ""
 				 * Description: Allows to pass user-defined style to the toggle's first immediate child (first DIV inside
 				 * <toggle ...> which is what you actually see as widget's outer container).
-				 * This can be used to alter widget's appearance. Use with caution! Note that 'width' and 'height' values
-				 * will be overwritten by either auto-calculated values or used-specified values from 'width' and 'height'
+				 * This can be used to alter widget's appearance. Use with caution! Note that "width" and "height" values
+				 * will be overwritten by either auto-calculated values or used-specified values from "width" and "height"
 				 * attributes.
-				 * Example: <toggle ... toggle-style='{'border': '1px dashed #f00'}'>
+				 * Example: <toggle ... toggle-style="{'border': '1px dashed #f00'}">
 				 */
 				toggleStyle: '',
 				/**
 				 * Type: string
-				 * Default: ''
+				 * Default: ""
 				 * Description: Passes a class to the toggle's first immediate child
 				 **/
 				toggleClass: '',
 				style: '',
 				/**
 				 * Type: string
-				 * Default: ''
+				 * Default: ""
 				 * Description: Allows to force width and height to specified value. Use css notation such as 50px, 1%. etc.
 				 * This is useful when you have a group of toggles with different text in the lables and, therefore,
 				 * would never line-up to the same width.
-				 * Example: <toggle ... width='90px'>
+				 * Example: <toggle ... width="90px">
 				 */
 				width: '',
 				height: '',
 				/**
 				 * Type: boolean
 				 * Default: false
-				 * Description: Defines 'disabled' attribute for the <toggle> directive itself. The ng-disabled dirrective
+				 * Description: Defines "disabled" attribute for the <toggle> directive itself. The ng-disabled dirrective
 				 * manipulates this attribute, plus there is additional code that propagates its value to child elements.
-				 * Applying 'disabled' to <toggle> itself apparently does nothing, but when its value is propagated to
+				 * Applying "disabled" to <toggle> itself apparently does nothing, but when its value is propagated to
 				 * two child <label> elements, it allows us to disable the widget.
-				 * Note that attribute 'diasbled' is not the same as ng-disabled Angular directive. In most cases, you
-				 * should use <toggle ... ng-disabled='expression'> (not <toggle ... disabled='{{expression}}'>) for this
+				 * Note that attribute "disabled" is not the same as ng-disabled Angular directive. In most cases, you
+				 * should use <toggle ... ng-disabled="expression"> (not <toggle ... disabled="{{expression}}">) for this
 				 * to work properly.
-				 * [Per HTML specs, the 'disabled' property does not need a value. Just mentioning it is enough. Angular
-				 * will, however, also add the value 'disabled' (< ... disabled='disabled'>)]
+				 * [Per HTML specs, the "disabled" property does not need a value. Just mentioning it is enough. Angular
+				 * will, however, also add the value "disabled" (< ... disabled="disabled">)]
 				 */
 				disabled: false,
 			})
@@ -283,12 +283,12 @@
 			function () {
 				return {
 					restrict: 'E',
-					template: "<div ng-cloak class='toggle btn off' ng-style='wrapperStyle'" +
-						"ng-click='onSwitch($event)'>" +
-						"<div class='toggle-group'>" +
-						"<label class='btn toggle-on-pad'></label>" +
-						"<label class='btn toggle-off-pad active'></label>" +
-						"<span class='btn btn-default toggle-handle'></span>" +
+					template: "<div ng-cloak class=\"toggle btn off\" ng-style=\"wrapperStyle\"" +
+						"ng-click=\"onSwitch($event)\">" +
+						"<div class=\"toggle-group\">" +
+						"<label class=\"btn toggle-on-pad\"></label>" +
+						"<label class=\"btn toggle-off-pad active\"></label>" +
+						"<span class=\"btn btn-default toggle-handle\"></span>" +
 						"</div>" +
 						"</div>",
 					scope: {
