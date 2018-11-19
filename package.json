@@ -6,10 +6,7 @@
     "email": "ziscloud@gmail.com"
   },
   "main": "dist/angular-bootstrap-toggle.min.js",
-  "dependencies": {
-    "bower": "^1.8.4",
-    "npm": "^6.4.0"
-  },
+  "dependencies": {},
   "devDependencies": {
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.1",
