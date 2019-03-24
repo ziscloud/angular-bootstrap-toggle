@@ -96,12 +96,12 @@
 			[
 				'$scope', '$attrs', '$interpolate', '$log', '$document', 'toggleConfig', '$toggleSuppressError',
 				function ($scope, $attrs, $interpolate, $log, $document, toggleConfig, $toggleSuppressError) {
+
+					// This controller (self)
 					var self = this;
-					var labels, spans, divs;
-					var ngModelCtrl;
-					var toggleConfigKeys = Object.keys(toggleConfig);
 
 					// Configuration attributes
+					var toggleConfigKeys = Object.keys(toggleConfig);
 					angular.forEach(toggleConfigKeys,
 						function (k, i) {
 							if (angular.isDefined($attrs[k])) {
@@ -140,31 +140,61 @@
 					if (self.off === '') {
 						self.off = '&nbsp;';
 					}
-					
-					var evaluateSize = function (reevaluate) {
-						// Calculate the propery width
-						if (!self.width || reevaluate) {
-							var wrapperComputedWidth = Math.max(
-									self.onElement.scrollWidth,
-									self.offElement.scrollWidth
-								) +
-								Math.max(self.handleElement.scrollWidth, 16) / 2 +
-								2;
-							self.width = wrapperComputedWidth + 'px';
+
+					/**
+					 * evaluateSize
+					 **/
+					this.evaluateSize = function() {
+
+						// If width and height are already set, return immediately
+						if (!!self.width && !!self.height) {
+							return;
+						}
+
+						// Duplicate the On button, in the body, absolute position
+						var dupOnElement = self.onElement.cloneNode(true);
+						dupOnElement.style.position = 'absolute';
+						dupOnElement.style.display = 'block';
+						dupOnElement.style.visibility = 'hidden';
+						dupOnElement.style.border = '0';
+						dupOnElement.style.margin = '0';
+						$document[0].body.appendChild(dupOnElement);
+
+						// Duplicate the Off button, in the body, absolute position
+						var dupOffElement = self.offElement.cloneNode(true);
+						dupOffElement.style.position = 'absolute';
+						dupOffElement.style.display = 'block';
+						dupOffElement.style.visibility = 'hidden';
+						dupOffElement.style.border = '0';
+						dupOffElement.style.margin = '0';
+						$document[0].body.appendChild(dupOffElement);
+
+						// Calculate the proper width
+						if (!self.width) {
+							self.width = (Math.max(
+								dupOnElement.scrollWidth,
+								dupOffElement.scrollWidth
+							) + 2) + 'px';
 						}
 
 						// Calculate the proper height
-						if (!self.height || reevaluate) {
-							var wrapperComputedHeight = Math.max(
-									self.onElement.scrollHeight,
-									self.offElement.scrollHeight) +
-								2;
-							self.height = wrapperComputedHeight + 'px';
+						if (!self.height) {
+							self.height = (Math.max(
+								dupOnElement.scrollHeight,
+								dupOffElement.scrollHeight
+							) + 2) + 'px';
 						}
+
+						// Remove the duplicated elements
+						$document[0].body.removeChild(dupOnElement);
+						$document[0].body.removeChild(dupOffElement);
+
 					};
 
-					this.init = function (ngModelCtrl_) {
-						ngModelCtrl = ngModelCtrl_;
+					/**
+					 * init
+					 **/
+					this.init = function() {
 
 						var labels = self.element.find('label');
 						var spans = self.element.find('span');
@@ -189,41 +219,28 @@
 
 						// Set the toggleClass on the wrapper
 						angular.element(self.wrapperElement).addClass(self.toggleClass);
+						angular.element(self.onElement).addClass(self.onClass);
+						angular.element(self.offElement).addClass(self.offClass);
 
-						if (!onElement.is(':visible')) {
-							if (window.IntersectionObserver) {
-								var observer = new IntersectionObserver(function () {
-									if (onElement.is(':visible')) {
-										evaluateSize(true);
-										self.computeStyle();
-										observer.disconnect(onElement);
-									}
-								},
-									{
-										root: null,
-									});
-								observer.observe(this.onElement);
-							}
-						}
-						evaluateSize(false);
+						self.evaluateSize();
 
 						// Add the toggle-on and toggle-off classes, that change position and size of the labels
 						// and make sure that the buttons are properly placed.
 						// Once this is done, the height and width properties of the labels is no longer relevant,
 						// because of their new placement.
-						angular.element(self.onElement).addClass(self.onClass).addClass('toggle-on');
-						angular.element(self.offElement).addClass(self.offClass).addClass('toggle-off');
+						angular.element(self.onElement).addClass('toggle-on');
+						angular.element(self.offElement).addClass('toggle-off');
 
 						// Compute first style
 						self.computeStyle();
 
-						ngModelCtrl.$render = function () {
+						self.ngModelCtrl.$render = function () {
 							self.toggle();
 						};
 
 						// ng-change (for optional onChange event handler)
 						if (angular.isDefined($attrs.ngChange)) {
-							ngModelCtrl.$viewChangeListeners.push(function () {
+							self.ngModelCtrl.$viewChangeListeners.push(function () {
 								$scope.$eval($attrs.ngChange);
 							});
 						}
@@ -247,7 +264,7 @@
 					};
 
 					this.toggle = function () {
-						if (ngModelCtrl.$viewValue) {
+						if (self.ngModelCtrl.$viewValue) {
 							angular.element(self.wrapperElement).removeClass('off ' + self.offClass)
 								.addClass(self.onClass);
 						} else {
@@ -260,8 +277,8 @@
 						if (self.disabled) { // prevent changing .$viewValue if .disabled == true
 							return false;
 						} else {
-							ngModelCtrl.$setViewValue(!ngModelCtrl.$viewValue);
-							ngModelCtrl.$render();
+							self.ngModelCtrl.$setViewValue(!self.ngModelCtrl.$viewValue);
+							self.ngModelCtrl.$render();
 						}
 						return true;
 					};
@@ -283,26 +300,33 @@
 			function () {
 				return {
 					restrict: 'E',
-					template: "<div ng-cloak class=\"toggle btn off\" ng-style=\"wrapperStyle\"" +
-						"ng-click=\"onSwitch($event)\">" +
-						"<div class=\"toggle-group\">" +
-						"<label class=\"btn toggle-on-pad\"></label>" +
-						"<label class=\"btn toggle-off-pad active\"></label>" +
-						"<span class=\"btn btn-default toggle-handle\"></span>" +
-						"</div>" +
-						"</div>",
+					template: '<div ng-cloak class="toggle btn off" ng-style="wrapperStyle"' +
+						'ng-click="onSwitch($event)">' +
+						'<div class="toggle-group">' +
+						'<label class="btn toggle-on-pad"></label>' +
+						'<label class="btn toggle-off-pad active"></label>' +
+						'<span class="btn btn-default toggle-handle"></span>' +
+						'</div>' +
+						'</div>',
 					scope: {
 						ngModel: '='
 					},
 					require: ['toggle', 'ngModel'],
 					controller: 'ToggleController',
 					controllerAs: 'toggle',
-					compile: function (element, attrs, transclude) {
+					compile: function(element, attrs, transclude) {
 						return {
-							post: function (scope, element, attrs, ctrls) {
-								var toggleCtrl = ctrls[0], ngModelCtrl = ctrls[1];
+							post: function(scope, element, attrs, ctrls) {
+
+								// Get the controller
+								var toggleCtrl = ctrls[0];
+
+								// Set the controller with element and ngModel's controller
 								toggleCtrl.element = element;
-								toggleCtrl.init(ngModelCtrl);
+								toggleCtrl.ngModelCtrl = ctrls[1];
+
+								// Initialize and go!
+								toggleCtrl.init();
 							},
 							pre: function () { }
 						};

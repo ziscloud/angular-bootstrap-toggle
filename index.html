@@ -320,6 +320,21 @@
             <toggle ng-model="toggleValue" ng-change="changed()" toggle-class="quick"></toggle>
         </div>
 
+        <h3>Properly Sized <small>(even in hidden elements)</small></h3>
+
+        <p>Here's a toggle inside a modal, to prove that we've really fixed the auto-sizing issue!</p>
+
+        <p>
+          <button class="btn btn-primary" ng-click="openModal()">Open Modal</button>
+          <toggle ng-model="hideShow" ng-change="changed()" on="Show" off="Hide"></toggle>
+        </p>
+
+        <p>
+          <toggle ng-if="hideShow" ng-model="toggleValueHidden" on="ng-if"></toggle>
+          <toggle ng-show="hideShow" ng-model="toggleValueHidden" on="ng-show"></toggle>
+          <toggle ng-style="{display: hideShow ? 'inline-block' : 'none' }" ng-model="toggleValueHidden" on="CSS display"></toggle>
+        </p>
+
     </div>
 </main>
 
@@ -350,6 +365,7 @@
 <script src="https://code.angularjs.org/1.7.4/angular-animate.min.js"></script>
 <script src="https://code.angularjs.org/1.7.4/angular-touch.min.js"></script>
 <script src="https://code.angularjs.org/1.7.4/angular-sanitize.min.js"></script>
+<script src="https://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-2.5.0.js"></script>
 <script src="js/smoothscroll-angular-custom.js"></script>
 <script src="dist/angular-bootstrap-toggle.js"></script>
 <script src="js/app.js"></script>
