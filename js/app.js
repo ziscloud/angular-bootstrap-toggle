@@ -1,5 +1,5 @@
 /* global FastClick, smoothScroll */
-angular.module('ui.toggle.demo', ['ui.toggle', 'ngTouch', 'ngAnimate', 'ngSanitize'], function ($httpProvider) {
+angular.module('ui.toggle.demo', ['ui.bootstrap', 'ui.toggle', 'ngTouch', 'ngAnimate', 'ngSanitize'], function ($httpProvider) {
     FastClick.attach(document.body);
     delete $httpProvider.defaults.headers.common['X-Requested-With'];
 }).run(['$location', function ($location) {
@@ -10,13 +10,26 @@ angular.module('ui.toggle.demo', ['ui.toggle', 'ngTouch', 'ngAnimate', 'ngSaniti
         });
     }
 }])
-    .controller('MainCtrl', function MainCtrl($scope) {
+    .controller('MainCtrl', ['$scope', '$uibModal', function MainCtrl($scope, $uibModal) {
         $scope.clickTimes = 0;
         $scope.toggleValue = true;
         $scope.changed = function(evt) {
             $scope.clickTimes+=1;
         };
-    });
+
+        $scope.openModal = function() {
+      		var modalInstance = $uibModal.open({
+      			templateUrl: 'modal.html',
+      			controller: 'modalInstanceCtrl',
+      		});
+      	}
+
+    }]).controller('modalInstanceCtrl', ['$scope', '$uibModalInstance', function($scope, $uibModalInstance) {
+
+    	$scope.cancel = function() {
+    		$uibModalInstance.dismiss('cancel');
+    	};
+    }]);
 
 /*
  * The following compatibility check is from:
