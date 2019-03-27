@@ -109,8 +109,8 @@
                         if (angular.isDefined(expression)) {
                             parseFn = $parse(expression);
                             if (!parseFn.constant) {
-                                throw angular.ngModelMinErr('constexpr', 'Expected constant expression for `{0}`, but saw ' +
-                                    '`{1}`.', name, expression);
+                                throw angular.ngModelMinErr('constexpr', 'Expected constant expression for `{0}`' +
+                                    ', but saw `{1}`.', name, expression);
                             }
                             return parseFn(context);
                         }
@@ -294,7 +294,9 @@
 						if (self.disabled) { // prevent changing .$viewValue if .disabled == true
 							return false;
 						} else {
-							self.ngModelCtrl.$setViewValue(!angular.equals(self.ngModelCtrl.$viewValue, trueValue) ? trueValue : falseValue);
+							self.ngModelCtrl.$setViewValue(
+								!angular.equals(self.ngModelCtrl.$viewValue, trueValue) ? trueValue : falseValue
+							);
 							self.ngModelCtrl.$render();
 						}
 						return true;
