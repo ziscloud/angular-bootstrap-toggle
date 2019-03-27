@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html ng-app="ui.toggle.demo" id="top">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description"
+          content="Angular Bootstrap Toggle is a highly flexible Bootstrap plugin that converts checkboxes into toggles."/>
+    <meta name="keywords" content="angular, bootstrap, toggle, switch, bootstrap-toggle, bootstrap-switch"/>
+    <meta name="author" content="Tony Wang">
+    <meta name="robots" content="index, follow">
+    <meta name="revisit-after" content="1 month">
+    <title>Angular Bootstrap Toggle</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.3/styles/github.min.css" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="dist/angular-bootstrap-toggle.min.css" rel="stylesheet">
+    <link href="css/stylesheet.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+</head>
+<body ng-controller="MainCtrl">
+<header>
+    <nav class="navbar navbar-default container" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#top">Angular Bootstrap Toggle</a>
+            </div>
+            <div id="navbar" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#getting_started">Getting started</a></li>
+                    <li><a href="#demos">Demos</a></li>
+                    <li><a href="https://github.com/ziscloud/angular-bootstrap-toggle/issues">Issues</a></li>
+                    <li><a href="https://github.com/ziscloud/angular-bootstrap-toggle/archive/master.zip">Download</a>
+                    </li>
+                    <li>
+                        <iframe src="https://mdo.github.io/github-buttons/github-btn.html?user=ziscloud&repo=angular-bootstrap-toggle&type=watch"
+                                allowtransparency="true" frameborder="0" scrolling="0" width="62" height="20"></iframe>
+                    </li>
+                    <li>
+                        <iframe src="https://mdo.github.io/github-buttons/github-btn.html?user=ziscloud&repo=angular-bootstrap-toggle&type=fork"
+                                allowtransparency="true" frameborder="0" scrolling="0" width="53" height="20"></iframe>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="mast-head">
+        <div class="container">
+            <h1>Angular Bootstrap Toggle</h1>
+
+            <p><a href="http://angularjs.org/" target="_blank">AngularJS</a> version of
+              <a href="http://www.bootstraptoggle.com/">Bootstrap Toggle</a></p>
+
+            <div class="mast-links">
+                <iframe src="https://mdo.github.io/github-buttons/github-btn.html?user=ziscloud&repo=angular-bootstrap-toggle&type=watch&count=true&size=large"
+                        allowtransparency="true" frameborder="0" scrolling="0" width="150" height="30"></iframe>
+                <iframe src="https://mdo.github.io/github-buttons/github-btn.html?user=ziscloud&repo=angular-bootstrap-toggle&type=fork&count=true&size=large"
+                        allowtransparency="true" frameborder="0" scrolling="0" width="150" height="30"></iframe>
+            </div>
+
+            <p>
+              <a href="https://www.jsdelivr.com/package/npm/angular-bootstrap-toggle"><img src="https://data.jsdelivr.com/v1/package/npm/angular-bootstrap-toggle/badge"></a>
+            </p>
+        </div>
+    </div>
+</header>
+
+<main>
+    <div class="container">
+        <section id="getting_started">
+            <h2>Getting Started</h2>
+            <hr>
+            <h3>Dependencies</h3>
+
+            <p>
+                This repository contains a set of <strong>native AngularJS directives</strong> based on
+                Bootstrap's markup and CSS. As a result no dependency on jQuery or Bootstrap's
+                JavaScript is required. The <strong>only required dependencies</strong> are:
+            </p>
+            <ul>
+                <li><a href="http://angularjs.org" target="_blank">AngularJS</a> (requires AngularJS 1.3.x,
+                    tested with 1.7.4).
+                </li>
+                <li><a href="http://getbootstrap.com" target="_blank">Bootstrap CSS</a> (tested with version
+                    3.3.7).
+                </li>
+            </ul>
+            <h3>Installation</h3>
+
+            <p>You can <a href="https://github.com/ziscloud/angular-bootstrap-toggle/archive/master.zip">download</a>
+                the latest
+                version of Angular Bootstrap Toggle or use CDN to load the library.</p>
+
+            <code class="highlight">&lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/angular-bootstrap-toggle@0.4.0/dist/angular-bootstrap-toggle.min.css"&gt;
+&lt;script src="https://cdn.jsdelivr.net/npm/angular-bootstrap-toggle@0.4.0/dist/angular-bootstrap-toggle.min.js"&gt;&lt;/script&gt;</code>
+
+            <h3>Bower Installation</h3>
+            <pre><code>$ bower install angular-bootstrap-toggle --save</code></pre>
+            <p>As soon as you've got all the files downloaded and included in your page you just need to declare
+                a dependency on the <code>ui.toggle</code> <a
+                        href="http://docs.angularjs.org/guide/module">module</a>:<br>
+            </p>
+            <pre><code>angular.module('myModule', ['ui.toggle']);</code></pre>
+        </section>
+    </div>
+    <div id="usage" class="container">
+        <h2>Usage</h2>
+        <hr>
+
+        <h3>Basic example</h3>
+
+        <p>value: {{toggleValue}}</p>
+
+        <p>change event triggered times: {{clickTimes}}</p>
+
+        <div class="example">
+            <toggle ng-model="toggleValue" ng-change="changed()"></toggle>
+        </div>
+
+        <h3>Options</h3>
+
+        <p>Options can be passed via attributes</p>
+
+        <div class="example">
+            <toggle ng-model="toggleValue" ng-change="changed()" on="Enabled" off="Disabled"></toggle>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped table-condensed">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Default</th>
+                    <th>Description</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>on</td>
+                    <td>string | html</td>
+                    <td><code>"On"</code></td>
+                    <td>Text of the <em>on</em> toggle</td>
+                </tr>
+                <tr>
+                    <td>off</td>
+                    <td>string | html</td>
+                    <td><code>"Off"</code></td>
+                    <td>Text of the <em>off</em> toggle</td>
+                </tr>
+                <tr>
+                    <td>size</td>
+                    <td>string</td>
+                    <td><code>"btn"</code></td>
+                    <td>
+                        Size class of the toggle. Possible values
+                        are:<code>btn-lg</code>,<code>btn</code>,<code>btn-sm</code>,<code>btn-xs</code><br>
+                        Refer to Bootstrap <a href="http://getbootstrap.com/css/#buttons-sizes" target="_blank">Button
+                        Sizes</a> documentation for more information.
+                    </td>
+                </tr>
+                <tr>
+                    <td>on-class</td>
+                    <td>string</td>
+                    <td><code>"btn-primary"</code></td>
+                    <td>
+                        Class of the <em>on</em> toggle.<br>Possible values
+                        are:<code>btn-default</code>,<code>btn-primary</code>,<code>btn-success</code>,<code>btn-info</code>,<code>btn-warning</code>,<code>btn-danger</code><br>
+                        Refer to Bootstrap <a href="http://getbootstrap.com/css/#buttons-options" target="_blank">Button
+                        Options</a> documentation for more information.
+                    </td>
+                </tr>
+                <tr>
+                    <td>off-class</td>
+                    <td>string</td>
+                    <td><code>"btn-default"</code></td>
+                    <td>
+                        Class of the <em>off</em> toggle.<br>Possible values
+                        are:<code>btn-default</code>,<code>btn-primary</code>,<code>btn-success</code>,<code>btn-info</code>,<code>btn-warning</code>,<code>btn-danger</code><br>
+                        Refer to Bootstrap <a href="http://getbootstrap.com/css/#buttons-options" target="_blank">Button
+                        Options</a> documentation for more information.
+                    </td>
+                </tr>
+                <tr>
+                    <td>toggle-class</td>
+                    <td>string</td>
+                    <td>''</td>
+                    <td>
+                        Appends the value to the class attribute of the toggle. This can be used to apply custom styles.
+                        Refer to Custom Styles for reference.
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="demos" class="container">
+        <h2>Demos</h2>
+        <hr>
+
+        <h3>Sizes</h3>
+
+        <p>Bootstrap toggle is available in different sizes. Refer to Bootstrap <a
+                href="http://getbootstrap.com/css/#buttons-sizes" target="_blank">Button Sizes</a> documentation for
+            more information.</p>
+
+        <div class="example">
+            <toggle ng-model="toggleValue" ng-change="changed()" size="btn-lg"></toggle>
+            <toggle ng-model="toggleValue" ng-change="changed()"></toggle>
+            <toggle ng-model="toggleValue" ng-change="changed()" size="btn-sm"></toggle>
+            <toggle ng-model="toggleValue" ng-change="changed()" size="btn-xs"></toggle>
+        </div>
+
+        <h3>Colors</h3>
+
+        <p>Bootstrap Toggle supports various colors. Refer to Bootstrap <a
+                href="http://getbootstrap.com/css/#buttons-options" target="_blank">Button Options</a> documentation for
+            more information.</p>
+
+        <div class="example">
+            <toggle ng-model="toggleValue" ng-change="changed()" on-class="btn-primary"></toggle>
+            <toggle ng-model="toggleValue" ng-change="changed()" on-class="btn-success"></toggle>
+            <toggle ng-model="toggleValue" ng-change="changed()" on-class="btn-info"></toggle>
+            <toggle ng-model="toggleValue" ng-change="changed()" on-class="btn-warning"></toggle>
+            <toggle ng-model="toggleValue" ng-change="changed()" on-class="btn-danger"></toggle>
+            <toggle ng-model="toggleValue" ng-change="changed()" on-class="btn-default"></toggle>
+        </div>
+
+        <h3>Colors Mix</h3>
+
+        <p>You can style on state as well as the off state.</p>
+
+        <div class="example">
+            <toggle ng-model="toggleValue" ng-change="changed()" on-class="btn-success" off-class="btn-danger"></toggle>
+            <toggle ng-model="toggleValue" ng-change="changed()" on-class="btn-warning" off-class="btn-info"></toggle>
+        </div>
+
+        <h3>Custom Style</h3>
+
+        <p>Customized styles can be applied as easily.</p>
+
+        <div class="example">
+            <style>
+                .toggle.ios, .toggle-on.ios, .toggle-off.ios {
+                    border-radius: 20px;
+                }
+
+                .toggle.ios .toggle-handle {
+                    border-radius: 20px;
+                }
+            </style>
+            <toggle ng-model="toggleValue" ng-change="changed()" toggle-class="ios"></toggle>
+            <style>
+                .toggle.android {
+                    border-radius: 0px;
+                }
+
+                .toggle.android .toggle-handle {
+                    border-radius: 0px;
+                }
+            </style>
+            <toggle ng-model="toggleValue" ng-change="changed()" toggle-class="android" on-class="btn-info"></toggle>
+        </div>
+
+        <h3>Custom Text</h3>
+
+        <p>The text can be changed easily with attributes or options.</p>
+
+        <div class="example">
+            <toggle ng-model="toggleValue" ng-change="changed()" on="Ready" off="Not Ready"
+                    on-class="btn-success" off-class="btn-danger"></toggle>
+        </div>
+
+        <h3>Icons/Html Text</h3>
+
+        <p>You can easily add icons or images since html is supported for on/off text.</p>
+
+        <div class="example">
+            <toggle ng-model="toggleValue" ng-change="changed()" on="<i class='fa fa-play'></i> Play"
+                    off="<i class='fa fa-pause'></i> Pause"></toggle>
+        </div>
+
+        <h3>Multiple Lines of Text</h3>
+
+        <p>Toggles with multiple lines will adjust its heights.</p>
+
+        <div class="example">
+            <toggle ng-model="toggleValue" ng-change="changed()" on="Hello<br>World" off="Goodbye<br>World"></toggle>
+        </div>
+
+        <h3>Animation Speed</h3>
+
+        <p>Transition speed can be easily controlled with css <code>transition</code> property on
+            <code>.toggle-group</code>. You can also turn animation off completely.</p>
+
+        <div class="example">
+            <style>
+                .slow .toggle-group {
+                    transition: left 0.7s;
+                    -webkit-transition: left 0.7s;
+                }
+
+                .fast .toggle-group {
+                    transition: left 0.1s;
+                    -webkit-transition: left 0.1s;
+                }
+
+                .quick .toggle-group {
+                    transition: none;
+                    -webkit-transition: none;
+                }
+            </style>
+            <toggle ng-model="toggleValue" ng-change="changed()" toggle-class="slow"></toggle>
+            <toggle ng-model="toggleValue" ng-change="changed()" toggle-class="fast"></toggle>
+            <toggle ng-model="toggleValue" ng-change="changed()" toggle-class="quick"></toggle>
+        </div>
+
+        <h3>Properly Sized <small>(even in hidden elements)</small></h3>
+
+        <p>Here's a toggle inside a modal, to prove that we've really fixed the auto-sizing issue!</p>
+
+        <p>
+          <button class="btn btn-primary" ng-click="openModal()">Open Modal</button>
+          <toggle ng-model="hideShow" ng-change="changed()" on="Show" off="Hide"></toggle>
+        </p>
+
+        <p>
+          <toggle ng-if="hideShow" ng-model="toggleValueHidden" on="ng-if"></toggle>
+          <toggle ng-show="hideShow" ng-model="toggleValueHidden" on="ng-show"></toggle>
+          <toggle ng-style="{display: hideShow ? 'inline-block' : 'none' }" ng-model="toggleValueHidden" on="CSS display"></toggle>
+        </p>
+
+    </div>
+</main>
+
+<footer>
+    <div class="container">
+        <p>
+            <img class="nyt-logo" src="img/nyt.png">
+            <img class="nyt-logo" src="img/nytdev.svg">
+        </p>
+
+        <p>Designed and built by <a href="https://github.com/minhur" target="_blank">Min Hur</a> for <a
+                href="http://developers.nytimes.com" target="_blank">The New York Times Company</a></p>
+
+        <p>Latest Version: 2.2.0 | Code licensed under MIT</p>
+
+        <p>
+            <iframe src="https://mdo.github.io/github-buttons/github-btn.html?user=minhur&repo=bootstrap-toggle&type=watch&count=true"
+                    allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"></iframe>
+            <iframe src="https://mdo.github.io/github-buttons/github-btn.html?user=minhur&repo=bootstrap-toggle&type=fork&count=true"
+                    allowtransparency="true" frameborder="0" scrolling="0" width="95" height="20"></iframe>
+        </p>
+    </div>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.3/highlight.min.js"></script>
+<script src="js/script.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fastclick/0.6.7/fastclick.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.4/angular.min.js"></script>
+<script src="https://code.angularjs.org/1.7.4/angular-animate.min.js"></script>
+<script src="https://code.angularjs.org/1.7.4/angular-touch.min.js"></script>
+<script src="https://code.angularjs.org/1.7.4/angular-sanitize.min.js"></script>
+<script src="https://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-2.5.0.js"></script>
+<script src="js/smoothscroll-angular-custom.js"></script>
+<script src="dist/angular-bootstrap-toggle.js"></script>
+<script src="js/app.js"></script>
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-68673271-1', 'auto');
+    ga('send', 'pageview');
+
+</script>
+</body>
+</html>

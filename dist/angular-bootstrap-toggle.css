@@ -4,7 +4,6 @@
   margin-right: 5px;
 }
 .toggle {
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   position: relative;
   overflow: hidden;
 }
@@ -51,46 +50,27 @@
   width: 0px;
   border-width: 0 1px;
 }
-.toggle.btn {
-  min-width: 59px;
-  min-height: 34px;
+.toggle-on-pad.btn.btn-lg {
+  padding-right: 32px;
 }
-.toggle-on.btn {
+.toggle-off-pad.btn.btn-lg {
+  padding-left: 32px;
+}
+.toggle-on-pad.btn {
   padding-right: 24px;
 }
-.toggle-off.btn {
+.toggle-off-pad.btn {
   padding-left: 24px;
 }
-.toggle.btn-lg {
-  min-width: 79px;
-  min-height: 45px;
-}
-.toggle-on.btn-lg {
-  padding-right: 31px;
-}
-.toggle-off.btn-lg {
-  padding-left: 31px;
-}
-.toggle-handle.btn-lg {
-  width: 40px;
-}
-.toggle.btn-sm {
-  min-width: 50px;
-  min-height: 30px;
-}
-.toggle-on.btn-sm {
+.toggle-on-pad.btn.btn-sm {
   padding-right: 20px;
 }
-.toggle-off.btn-sm {
+.toggle-off-pad.btn.btn-sm {
   padding-left: 20px;
 }
-.toggle.btn-xs {
-  min-width: 35px;
-  min-height: 22px;
+.toggle-on-pad.btn.btn-xs {
+  padding-right: 9px;
 }
-.toggle-on.btn-xs {
-  padding-right: 12px;
-}
-.toggle-off.btn-xs {
-  padding-left: 12px;
+.toggle-off-pad.btn.btn-xs {
+  padding-left: 9px;
 }
