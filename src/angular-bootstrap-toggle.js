@@ -50,6 +50,13 @@
 				offClass: 'btn-default',
 				offstyle: '', /* for some backward compatibility only */
 				/**
+				 * Type: string
+				 * Default: "btn-default"
+				 * Description: Class for little bar from one of standard bootstrap button types.
+				 * Possible values: btn-default, btn-primary, btn-success, btn-info, btn-warning, btn-danger
+				 */
+				barClass: 'btn-default',
+				/**
 				 * Type: JSON string
 				 * Default: ""
 				 * Description: Allows to pass user-defined style to the toggle's first immediate child (first DIV inside
@@ -252,6 +259,7 @@
 						angular.element(self.wrapperElement).addClass(self.toggleClass);
 						angular.element(self.onElement).addClass(self.onClass);
 						angular.element(self.offElement).addClass(self.offClass);
+						angular.element(self.handleElement).addClass(self.barClass);
 
 						self.evaluateSize();
 
@@ -338,7 +346,7 @@
 						'<div class="toggle-group">' +
 						'<label class="btn toggle-on-pad"></label>' +
 						'<label class="btn toggle-off-pad active"></label>' +
-						'<span class="btn btn-default toggle-handle"></span>' +
+						'<span class="btn toggle-handle"></span>' +
 						'</div>' +
 						'</div>',
 					scope: {
