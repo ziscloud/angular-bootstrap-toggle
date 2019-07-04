@@ -45,7 +45,7 @@
 				 * Type: string
 				 * Default: "btn-default"
 				 * Description: Class for "off" state from one of standard bootstrap button types.
-				 * Possible values: btn-default, btn-primary,btn- success, btn-info, btn-warning, btn-danger
+				 * Possible values: btn-default, btn-primary, btn-success, btn-info, btn-warning, btn-danger
 				 */
 				offClass: 'btn-default',
 				offstyle: '', /* for some backward compatibility only */
@@ -92,13 +92,27 @@
 				 */
 				disabled: false,
 			})
+		.provider('toggle', function () {
+			var options;
+			options = {};
+			return {
+				setOption: function (newOpts) {
+					angular.extend(options, newOpts);
+				},
+				$get: function () {
+					return options;
+				}
+			};
+		})
 		.controller('ToggleController',
 			[
-				'$scope', '$attrs', '$interpolate', '$log', '$document', 'toggleConfig', '$toggleSuppressError', '$parse',
-				function ($scope, $attrs, $interpolate, $log, $document, toggleConfig, $toggleSuppressError, $parse) {
+				'$scope', '$attrs', '$interpolate', '$log', '$document', 'toggleConfig', '$toggleSuppressError', '$parse', 'toggle',
+				function ($scope, $attrs, $interpolate, $log, $document, toggleConfig, $toggleSuppressError, $parse, config) {
 
 					// This controller (self)
 					var self = this;
+
+					angular.extend(toggleConfig, config);
 
                     // Support 'ng-true-value' and 'ng-false-value' attrs
                     var trueValue = parseConstantExpr($parse, $scope, 'ngTrueValue', $attrs.ngTrueValue, true);
