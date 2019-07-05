@@ -45,17 +45,10 @@
 				 * Type: string
 				 * Default: "btn-default"
 				 * Description: Class for "off" state from one of standard bootstrap button types.
-				 * Possible values: btn-default, btn-primary, btn-success, btn-info, btn-warning, btn-danger
+				 * Possible values: btn-default, btn-primary,btn- success, btn-info, btn-warning, btn-danger
 				 */
 				offClass: 'btn-default',
 				offstyle: '', /* for some backward compatibility only */
-				/**
-				 * Type: string
-				 * Default: "btn-default"
-				 * Description: Class for little bar from one of standard bootstrap button types.
-				 * Possible values: btn-default, btn-primary, btn-success, btn-info, btn-warning, btn-danger
-				 */
-				barClass: 'btn-default',
 				/**
 				 * Type: JSON string
 				 * Default: ""
@@ -99,44 +92,13 @@
 				 */
 				disabled: false,
 			})
-		.provider('toggle', function () {
-			var options;
-			options = {};
-			return {
-				setOption: function (newOpts) {
-					angular.extend(options, newOpts);
-				},
-				$get: function () {
-					return options;
-				}
-			};
-		})
 		.controller('ToggleController',
 			[
-				'$scope', '$attrs', '$interpolate', '$log', '$document', 'toggleConfig', '$toggleSuppressError', '$parse', 'toggle',
-				function ($scope, $attrs, $interpolate, $log, $document, toggleConfig, $toggleSuppressError, $parse, config) {
+				'$scope', '$attrs', '$interpolate', '$log', '$document', 'toggleConfig', '$toggleSuppressError',
+				function ($scope, $attrs, $interpolate, $log, $document, toggleConfig, $toggleSuppressError) {
 
 					// This controller (self)
 					var self = this;
-
-					angular.extend(toggleConfig, config);
-
-                    // Support 'ng-true-value' and 'ng-false-value' attrs
-                    var trueValue = parseConstantExpr($parse, $scope, 'ngTrueValue', $attrs.ngTrueValue, true);
-                    var falseValue = parseConstantExpr($parse, $scope, 'ngFalseValue', $attrs.ngFalseValue, false);
-
-                    function parseConstantExpr($parse, context, name, expression, fallback) {
-                        var parseFn;
-                        if (angular.isDefined(expression)) {
-                            parseFn = $parse(expression);
-                            if (!parseFn.constant) {
-                                throw angular.ngModelMinErr('constexpr', 'Expected constant expression for `{0}`' +
-                                    ', but saw `{1}`.', name, expression);
-                            }
-                            return parseFn(context);
-                        }
-                        return fallback;
-                    }
 
 					// Configuration attributes
 					var toggleConfigKeys = Object.keys(toggleConfig);
@@ -259,7 +221,6 @@
 						angular.element(self.wrapperElement).addClass(self.toggleClass);
 						angular.element(self.onElement).addClass(self.onClass);
 						angular.element(self.offElement).addClass(self.offClass);
-						angular.element(self.handleElement).addClass(self.barClass);
 
 						self.evaluateSize();
 
@@ -283,7 +244,6 @@
 								$scope.$eval($attrs.ngChange);
 							});
 						}
-
 					};
 
 					this.computeStyle = function () {
@@ -300,10 +260,11 @@
 						$scope.wrapperStyle = (self.toggleStyle) ? $scope.$parent.$eval(self.toggleStyle) : {};
 						$scope.wrapperStyle.width = self.width;
 						$scope.wrapperStyle.height = self.height;
+
 					};
 
 					this.toggle = function () {
-						if (angular.equals(self.ngModelCtrl.$viewValue, trueValue)) {
+						if (self.ngModelCtrl.$viewValue) {
 							angular.element(self.wrapperElement).removeClass('off ' + self.offClass)
 								.addClass(self.onClass);
 						} else {
@@ -316,9 +277,7 @@
 						if (self.disabled) { // prevent changing .$viewValue if .disabled == true
 							return false;
 						} else {
-							self.ngModelCtrl.$setViewValue(
-								!angular.equals(self.ngModelCtrl.$viewValue, trueValue) ? trueValue : falseValue
-							);
+							self.ngModelCtrl.$setViewValue(!self.ngModelCtrl.$viewValue);
 							self.ngModelCtrl.$render();
 						}
 						return true;
@@ -346,7 +305,7 @@
 						'<div class="toggle-group">' +
 						'<label class="btn toggle-on-pad"></label>' +
 						'<label class="btn toggle-off-pad active"></label>' +
-						'<span class="btn toggle-handle"></span>' +
+						'<span class="btn btn-default toggle-handle"></span>' +
 						'</div>' +
 						'</div>',
 					scope: {
@@ -368,7 +327,6 @@
 
 								// Initialize and go!
 								toggleCtrl.init();
-
 							},
 							pre: function () { }
 						};
